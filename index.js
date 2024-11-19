@@ -158,7 +158,7 @@ async function initializeCommands() {
 
 client.once('ready', async () => {
 
-    console.log(`Logged in as ${client.user}`);
+    console.log(`Logged in as ${client.user.username}`);
 
     
 
@@ -175,7 +175,7 @@ client.once('ready', async () => {
 
     console.log(`Serving ${client.guilds.cache.size} servers`);
 
-    console.log(`${client.user} is ready!`);
+    console.log(`${client.user.username} is ready!`);
 
     
 

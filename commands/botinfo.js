@@ -33,11 +33,6 @@ module.exports = {
                     inline: true
                 },
                 {
-                    name: '💻 System',
-                    value: `${os.type()} ${os.arch()}`,
-                    inline: true
-                },
-                {
                     name: '🏓 Ping',
                     value: `${Math.round(interaction.client.ws.ping)}ms`,
                     inline: true
