@@ -38,8 +38,6 @@ client.commands = new Collection();
 
 async function deployCommands() {
 
-    console.log('\n=== DEPLOYING COMMANDS ===');
-
     const commands = [];
 
     const commandsPath = path.join(__dirname, 'commands');
@@ -61,8 +59,6 @@ async function deployCommands() {
         if ('data' in command) {
 
             commands.push(command.data.toJSON());
-
-            console.log(`✅ Prepared command from ${file}`);
 
         }
 
@@ -106,8 +102,6 @@ async function deployCommands() {
 
 async function initializeCommands() {
 
-    console.log('\n=== INITIALIZING COMMANDS ===');
-
     
 
     const commandsPath = path.join(__dirname, 'commands');
@@ -134,8 +128,6 @@ async function initializeCommands() {
 
                 client.commands.set(command.data.name, command);
 
-                console.log(`✅ Successfully loaded command: ${command.data.name}`);
-
             } else {
 
                 console.log(`❌ Failed to load command ${file}: Missing required "data" or "execute" property`);
@@ -152,10 +144,8 @@ async function initializeCommands() {
 
     
 
-    console.log('\nCommand initialization summary:');
 
-    console.log(`Total commands: ${client.commands.size}`);
-
+    console.log('\n');
     console.log(`Successfully loaded: ${client.commands.size}`);
 
     console.log(`Failed to load: ${commandFiles.length - client.commands.size}`);
@@ -168,9 +158,7 @@ async function initializeCommands() {
 
 client.once('ready', async () => {
 
-    console.log(`\n=== BOT STARTUP ===`);
-
-    console.log(`Logged in as ${client.user.tag}`);
+    console.log(`Logged in as ${client.user}`);
 
     
 
@@ -184,13 +172,10 @@ client.once('ready', async () => {
 
     await initializeCommands();
 
-    
-
-    console.log(`\n=== SERVER STATUS ===`);
 
     console.log(`Serving ${client.guilds.cache.size} servers`);
 
-    console.log(`Bot is ready!`);
+    console.log(`${client.user} is ready!`);
 
     
 
