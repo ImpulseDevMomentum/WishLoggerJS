@@ -14,17 +14,17 @@ module.exports = {
             .addFields(
                 {
                     name: '<:members:1245656464778068039> Creators',
-                    value: 'Wish is being hosted by [MythicalShop.pl](https://discord.gg/Zh9dMxqKcu) and programed by <@1122846756124774470>',
+                    value: 'Wish is being programed by ImpulseDev',
                     inline: false
                 },
                 {
                     name: '<:8859discordrolesfromvega:1248350895347863624> Discord Server',
-                    value: '[Support Server](https://discord.gg/B3jZpkAuYB)',
+                    value: '[Support Server]()',
                     inline: false
                 },
                 {
                     name: '<:1626onlineweb:1248350904051302450> Website',
-                    value: '[Wish Website](https://wishbot.xyz)',
+                    value: '[Wish Website]()',
                     inline: true
                 },
                 {

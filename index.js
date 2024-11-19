@@ -210,9 +210,9 @@ client.once('ready', async () => {
 
     
 
-    const inviteLink = `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot%20applications.commands`;
-    console.log('\n=== BOT INVITE LINK ===');
-    console.log(inviteLink);
+    // const inviteLink = `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot%20applications.commands`;
+    // console.log('\n=== BOT INVITE LINK ===');
+    // console.log(inviteLink);
 
 });
 
