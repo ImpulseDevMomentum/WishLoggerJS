@@ -47,6 +47,7 @@ async function deployCommands() {
 
 
     console.log('Found command files:', commandFiles);
+    console.log('\n');
 
 
 
@@ -87,6 +88,7 @@ async function deployCommands() {
 
 
         console.log(`✅ Successfully registered ${data.length} application commands.`);
+        console.log('\n');
 
     } catch (error) {
 
@@ -145,10 +147,9 @@ async function initializeCommands() {
     
 
 
-    console.log('\n');
     console.log(`Successfully loaded: ${client.commands.size}`);
-
     console.log(`Failed to load: ${commandFiles.length - client.commands.size}`);
+    console.log('\n');
 
 }
 
@@ -157,8 +158,6 @@ async function initializeCommands() {
 // Event ready
 
 client.once('ready', async () => {
-
-    console.log(`Logged in as ${client.user.username}`);
 
     
 
@@ -171,11 +170,8 @@ client.once('ready', async () => {
     // Następnie inicjalizujemy je lokalnie
 
     await initializeCommands();
-
-
     console.log(`Serving ${client.guilds.cache.size} servers`);
-
-    console.log(`${client.user.username} is ready!`);
+    console.log(`Logged in as ${client.user.username}`);
 
     
 
