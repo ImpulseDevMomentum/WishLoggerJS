@@ -198,7 +198,7 @@ client.once('ready', async () => {
 
         activities: [{ 
 
-            name: '/help',
+            name: `/help | ${client.guilds.cache.size} servers`,
 
             type: 3
 
@@ -210,9 +210,45 @@ client.once('ready', async () => {
 
     
 
-    // const inviteLink = `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot%20applications.commands`;
-    // console.log('\n=== BOT INVITE LINK ===');
-    // console.log(inviteLink);
+    // Aktualizacja statusu przy zmianie liczby serwerów
+
+    client.on('guildCreate', () => {
+
+        client.user.setPresence({
+
+            activities: [{ 
+
+                name: `/help | ${client.guilds.cache.size} servers`,
+
+                type: 3
+
+            }],
+
+            status: 'online'
+
+        });
+
+    });
+
+
+
+    client.on('guildDelete', () => {
+
+        client.user.setPresence({
+
+            activities: [{ 
+
+                name: `/help | ${client.guilds.cache.size} servers`,
+
+                type: 3
+
+            }],
+
+            status: 'online'
+
+        });
+
+    });
 
 });
 
