@@ -22,13 +22,13 @@ module.exports = {
                         .setCustomId('ban_button')
                         .setLabel('Ban')
                         .setStyle(ButtonStyle.Secondary)
-                        .setEmoji('<:banned:1247971710150377523>')
+                        // .setEmoji('<:banned:1247971710150377523>')
                         .setDisabled(!canBan),
                     new ButtonBuilder()
                         .setCustomId('kick_button')
                         .setLabel('Kick')
                         .setStyle(ButtonStyle.Secondary)
-                        .setEmoji('<:Kicked:1294264935001493555>')
+                        // .setEmoji('<:Kicked:1294264935001493555>')
                         .setDisabled(!canKick)
                 );
             return row;
