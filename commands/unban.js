@@ -68,7 +68,7 @@ module.exports = {
                         await interaction.guild.members.unban(user);
                         
                         const unbanEmbed = new EmbedBuilder()
-                            .setColor('#00ff00')
+                            .setColor(0x00FF00)
                             .setTitle('User Unbanned')
                             .setDescription(`<:Fine:1248352477502246932> Successfully unbanned ${user.tag}`)
                             .setThumbnail(user.displayAvatarURL({ dynamic: true }))

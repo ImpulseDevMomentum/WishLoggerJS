@@ -65,7 +65,7 @@ module.exports = {
         function createEmbed(user, entries, title, interactionUser) {
             const embed = new EmbedBuilder()
                 .setTitle(`<:browsefotor:1245656463163002982> ${title} for ${user.username} (${user.id})`)
-                .setColor('Red')
+                .setColor(0xFF0000)
                 .setTimestamp();
 
             const displayedEntries = entries.slice(0, 25);

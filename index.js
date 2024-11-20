@@ -6,7 +6,7 @@ const path = require('path');
 
 require('dotenv').config();
 
-
+const clientManager = require('./utils/clientManager');
 
 const client = new Client({
 
@@ -26,7 +26,7 @@ const client = new Client({
 
 });
 
-
+clientManager.setClient(client);
 
 // Kolekcja komend
 

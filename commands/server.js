@@ -15,7 +15,7 @@ module.exports = {
         
         const embed = new EmbedBuilder()
             .setTitle('<:info:1247959011605741579> Server Information Card')
-            .setColor('#3498db')
+            .setColor(0x3498DB)
             .setThumbnail(guild.iconURL({ dynamic: true }))
             .addFields(
                 {
