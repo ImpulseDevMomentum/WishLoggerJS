@@ -29,7 +29,7 @@ function removeWarn(caseId) {
 }
 
 function generateUniqueCaseId() {
-    return Math.floor(Math.random() * 900) + 100;
+    return Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
 }
 
 function parseDuration(durationStr) {
@@ -50,23 +50,29 @@ async function scheduleWarnRemoval(caseId, duration, interaction, member, reason
 }
 
 async function sendWarnDeletedLog(interaction, member, reason, startTime, duration) {
-    const embed = new EmbedBuilder()
-        .setTitle("<:None0:1233827940895166655> Temporary Warn Deleted")
-        .setColor('RED')
-        .addFields(
-            { name: "<:Moderator:1247954371925512243> **Moderator**", value: `<@${interaction.user.id}>`, inline: false },
-            { name: "<:ID:1247954367953240155> **Moderator ID**", value: interaction.user.id, inline: false },
-            { name: "<:Member:1247954369639481498> **User**", value: `<@${member.id}>`, inline: false },
-            { name: "<:ID:1247954367953240155> **User ID**", value: member.id, inline: false },
-            { name: "<:reason:1247971720938258565> **Reason**", value: reason || "No reason provided", inline: false },
-            { name: "<:time:1247976543678894182> **Duration**", value: formatDuration(duration), inline: false },
-            { name: "<:time:1247976543678894182> **Today at**", value: currentDateTime(), inline: true }
-        );
+    try {
+        const channelLogId = await loadMemberLogsChannelId(interaction.guildId);
+        if (!channelLogId) return;
 
-    const channelLogId = loadMemberLogsChannelId(interaction.guildId);
-    if (channelLogId) {
         const logChannel = interaction.guild.channels.cache.get(channelLogId);
+        if (!logChannel) return;
+
+        const embed = new EmbedBuilder()
+            .setTitle("<:None0:1233827940895166655> Temporary Warn Deleted")
+            .setColor(0xFF0000)
+            .addFields(
+                { name: "<:Moderator:1247954371925512243> **Moderator**", value: `<@${interaction.user.id}>`, inline: false },
+                { name: "<:ID:1247954367953240155> **Moderator ID**", value: interaction.user.id, inline: false },
+                { name: "<:Member:1247954369639481498> **User**", value: `<@${member.id}>`, inline: false },
+                { name: "<:ID:1247954367953240155> **User ID**", value: member.id, inline: false },
+                { name: "<:reason:1247971720938258565> **Reason**", value: reason || "No reason provided", inline: false },
+                { name: "<:time:1247976543678894182> **Duration**", value: formatDuration(duration), inline: false },
+                { name: "<:time:1247976543678894182> **Today at**", value: currentDateTime(), inline: true }
+            );
+
         await logChannel.send({ embeds: [embed] });
+    } catch (error) {
+        console.error('Error sending warn deleted log:', error);
     }
 }
 
@@ -96,6 +102,7 @@ module.exports = {
                 .setRequired(false)),
 
     async execute(interaction) {
+        let db;
         if (!interaction.member.permissions.has('ADMINISTRATOR') &&
             !interaction.member.permissions.has('MANAGE_MESSAGES') &&
             interaction.member.id !== interaction.guild.ownerId) {
@@ -118,13 +125,13 @@ module.exports = {
             });
         }
 
-        const channelLogId = loadMemberLogsChannelId(interaction.guildId);
+        const channelLogId = await loadMemberLogsChannelId(interaction.guildId);
 
         if (channelLogId) {
             const logChannel = interaction.guild.channels.cache.get(channelLogId);
             const embed = new EmbedBuilder()
                 .setTitle("<:SUSSY:1247976542471061667> User Temporarily Warned")
-                .setColor('DARK_BLUE')
+                .setColor(0x0000FF)
                 .addFields(
                     { name: "<:ID:1247954367953240155> **Warn ID**", value: String(caseId), inline: false },
                     { name: "<:Moderator:1247954371925512243> **Moderator**", value: `<@${interaction.user.id}>`, inline: false },
@@ -142,8 +149,8 @@ module.exports = {
         } else {
             const embed = new EmbedBuilder()
                 .setTitle("<:NotFine:1248352479599661056> Logging Channel Not Set")
-                .setColor('ORANGE')
-                .addField("Notice", "Hey! You haven't set a logging channel. Without it, information about warns is limited. Please set your channel via `/setlogging` command!");
+                .setColor(0xFFA500)
+                .addFields({ name: "Notice", value: "Hey! You haven't set a logging channel. Without it, information about warns is limited. Please set your channel via `/setlogging` command!" });
 
             const button = new MessageButton()
                 .setCustomId(`tempwarn_${member.id}_${caseId}_${durationSeconds}`)

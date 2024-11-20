@@ -21,6 +21,7 @@ module.exports = {
                 .setRequired(false)),
 
     async execute(interaction) {
+        let db;
         try {
             const serverLanguage = await getServerLanguage(interaction.guildId);
             const languageStrings = require(`../language/${serverLanguage}.json`);
@@ -37,7 +38,7 @@ module.exports = {
             const caseId = interaction.options.getInteger('case_id');
             const reason = interaction.options.getString('reason') || '**No reason provided**';
 
-            const db = new sqlite3.Database('warns.db');
+            db = new sqlite3.Database('warns.db');
 
             const warning = await new Promise((resolve, reject) => {
                 db.get("SELECT * FROM warns WHERE ServerID = ? AND UserID = ? AND CaseID = ?",
@@ -95,7 +96,7 @@ module.exports = {
                 ephemeral: true
             });
         } finally {
-            db.close();
+            if (db) db.close();
         }
     }
 }; 
