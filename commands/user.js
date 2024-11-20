@@ -42,9 +42,19 @@ function formatTimeDelta(date) {
 
 async function checkAuditLogs(guild, userId, actionType) {
 
+    const actionTypes = {
+
+        'BanAdd': AuditLogEvent.MemberBanAdd,
+
+        'MemberKick': AuditLogEvent.MemberKick,
+
+        'MemberUpdate': AuditLogEvent.MemberUpdate
+
+    };
+
     const auditLogs = await guild.fetchAuditLogs({ 
 
-        type: AuditLogEvent[actionType],
+        type: actionTypes[actionType],
 
         limit: 100 
 

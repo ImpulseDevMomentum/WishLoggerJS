@@ -3,9 +3,7 @@ const { EmbedBuilder } = require('discord.js');
 const os = require('os');
 const process = require('process');
 const si = require('systeminformation');
-
-// Lista dozwolonych ID użytkowników
-const allowedUserIds = ['706057421189152839'];
+const { allowedUserIds } = require('../utils/allowedUsers');
 
 module.exports = {
     data: new SlashCommandBuilder()

@@ -38,7 +38,8 @@ module.exports = {
                 selectMenu.addOptions({
                     label: `${ban.user.tag}`,
                     description: `Reason: ${truncatedReason}`,
-                    value: ban.user.id
+                    value: ban.user.id,
+                    emoji: '🚫'
                 });
             }
 
@@ -125,9 +126,7 @@ module.exports = {
                             label: `${ban.user.tag}`,
                             description: `Reason: ${truncatedReason}`,
                             value: ban.user.id,
-                            emoji: {
-                                url: ban.user.displayAvatarURL({ size: 32 })
-                            }
+                            emoji: '🚫'
                         });
                     }
 
