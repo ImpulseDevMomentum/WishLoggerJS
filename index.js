@@ -265,25 +265,31 @@ client.on('interactionCreate', async interaction => {
 
         console.error(error);
 
-        if (interaction.replied || interaction.deferred) {
+        try {
 
-            await interaction.followUp({
-
-                content: 'There was an error while executing this command!',
-
-                ephemeral: true
-
-            });
-
-        } else {
-
-            await interaction.reply({
+            const errorMessage = {
 
                 content: 'There was an error while executing this command!',
 
                 ephemeral: true
 
-            });
+            };
+
+
+
+            if (interaction.deferred) {
+
+                await interaction.followUp(errorMessage);
+
+            } else if (!interaction.replied) {
+
+                await interaction.reply(errorMessage);
+
+            }
+
+        } catch (e) {
+
+            console.error('Error while handling command error:', e);
 
         }
 
@@ -302,6 +308,8 @@ client.on('error', error => {
 
 
 process.on('unhandledRejection', error => {
+
+    if (error.code === 10062) return; // Ignorujemy błędy "Unknown interaction"
 
     console.error('Unhandled promise rejection:', error);
 
