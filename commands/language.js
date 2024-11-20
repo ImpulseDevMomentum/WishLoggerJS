@@ -11,7 +11,7 @@ module.exports = {
             option.setName('language')
                 .setDescription('Select language')
                 .addChoices(
-                    { name: 'English', value: 'en_eu' },
+                    { name: 'English', value: 'en_us' },
                     { name: 'Polish', value: 'pl_pl' },
                     { name: 'Czech', value: 'cs_cs' },
                     { name: 'Russian', value: 'ru' },
