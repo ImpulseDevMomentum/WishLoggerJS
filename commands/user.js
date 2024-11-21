@@ -231,19 +231,19 @@ module.exports = {
 
                 { name: '<:ID:1309218763521917040> **User ID**', value: member.id, inline: false },
 
-                { name: '<:Banned:1309234088594374717> Was Ever Banned?', value: wasBanned ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
+                { name: '<:Banned:1309234088594374717> Was Ever Banned?', value: wasBanned ? '<:Enabled:1309252483411087423> **Yes**' : '<:NotFine:1309235869567287296> No', inline: true },
 
-                { name: '<:Kicked:1309240329953873930> Was Ever Kicked?', value: wasKicked ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
+                { name: '<:Kicked:1309240329953873930> Was Ever Kicked?', value: wasKicked ? '<:Enabled:1309252483411087423> **Yes**' : '<:NotFine:1309235869567287296> No', inline: true },
 
-                { name: '<:Microphone_Muted:1309232020613890078> Was Ever Muted?', value: wasMuted ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
+                { name: '<:Microphone_Muted:1309232020613890078> Was Ever Muted?', value: wasMuted ? '<:Enabled:1309252483411087423> **Yes**' : '<:NotFine:1309235869567287296> No', inline: true },
 
-                { name: '<:WarnDeleted:1309243525539299459> Was Ever Warned?', value: wasWarned ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
+                { name: '<:WarnDeleted:1309243525539299459> Was Ever Warned?', value: wasWarned ? '<:Enabled:1309252483411087423> **Yes**' : '<:NotFine:1309235869567287296> No', inline: true },
 
-                { name: '<:Report:1309246653240311880> Account is New', value: ((new Date() - member.user.createdAt) / (1000 * 60 * 60 * 24)) < 3 ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
+                { name: '<:Report:1309246653240311880> Account is New', value: ((new Date() - member.user.createdAt) / (1000 * 60 * 60 * 24)) < 3 ? '<:Enabled:1309252483411087423> **Yes**' : '<:NotFine:1309235869567287296> No', inline: true },
 
-                { name: '<:Report:1309246653240311880> No Profile Picture', value: !member.user.avatar ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
+                { name: '<:Report:1309246653240311880> No Profile Picture', value: !member.user.avatar ? '<:Enabled:1309252483411087423> **Yes**' : '<:NotFine:1309235869567287296> No', inline: true },
 
-                { name: '<:SuspectedActivtie:1309234701709344889> Suspicious Account', value: isSuspicious ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true }
+                { name: '<:SuspectedActivtie:1309234701709344889> Suspicious Account', value: isSuspicious ? '<:Enabled:1309252483411087423> **Yes**' : '<:NotFine:1309235869567287296> No', inline: true }
 
             );
 
@@ -311,174 +311,110 @@ module.exports = {
 
 
 
+        // Zmiana w sposobie obsługi interakcji
         const response = await interaction.reply({
-
             embeds: [userInfoEmbed],
-
             components: createButtons('user_info'),
-
             ephemeral: true,
-
             fetchReply: true
-
         });
-
-
 
         const collector = response.createMessageComponentCollector({
-
             time: 60000
-
         });
-
-
 
         collector.on('collect', async i => {
-
             if (i.user.id !== interaction.user.id) {
-
                 await i.reply({
-
                     content: 'You cannot use these buttons.',
-
                     ephemeral: true
-
                 });
-
                 return;
-
             }
 
-            switch (i.customId) {
-
-                case 'user_info':
-
-                    await i.update({
-
-                        embeds: [userInfoEmbed],
-
-                        components: createButtons('user_info')
-
-                    });
-
-                    break;
-
-
-
-                case 'security_actions':
-
-                    await i.update({
-
-                        embeds: [securityEmbed],
-
-                        components: createButtons('security_actions')
-
-                    });
-
-                    break;
-
-
-
-                case 'ban':
-
-                    if (interaction.member.permissions.has('BanMembers')) {
-
-                        try {
-
-                            await member.ban({ reason: 'Banned via slash security actions' });
-
-                            await i.reply({
-
-                                content: `<:Fine:1309230992455630949> ${member.toString()} has been banned.`,
-
-                                ephemeral: true
-
-                            });
-
-                        } catch (error) {
-
-                            await i.reply({
-
-                                content: '<:NotFine:1309235869567287296> Failed to ban the member.',
-
-                                ephemeral: true
-
-                            });
-
-                        }
-
-                    } else {
-
-                        await i.reply({
-
-                            content: '<:PermissionsDeclined:1309230994951508031> You don\'t have permission to ban members.',
-
-                            ephemeral: true
-
+            try {
+                switch (i.customId) {
+                    case 'user_info':
+                        await i.deferUpdate();
+                        await i.editReply({
+                            embeds: [userInfoEmbed],
+                            components: createButtons('user_info')
                         });
+                        break;
 
-                    }
-
-                    break;
-
-
-
-                case 'kick':
-
-                    if (interaction.member.permissions.has('KickMembers')) {
-
-                        try {
-
-                            await member.kick('Kicked via security actions');
-
-                            await i.reply({
-
-                                content: `<:Fine:1309230992455630949> ${member.toString()} has been kicked.`,
-
-                                ephemeral: true
-
-                            });
-
-                        } catch (error) {
-
-                            await i.reply({
-
-                                content: '<:NotFine:1309235869567287296> Failed to kick the member.',
-
-                                ephemeral: true
-
-                            });
-
-                        }
-
-                    } else {
-
-                        await i.reply({
-
-                            content: '<:PermissionsDeclined:1309230994951508031> You don\'t have permission to kick members.',
-
-                            ephemeral: true
-
+                    case 'security_actions':
+                        await i.deferUpdate();
+                        await i.editReply({
+                            embeds: [securityEmbed],
+                            components: createButtons('security_actions')
                         });
+                        break;
 
-                    }
+                    case 'ban':
+                        if (interaction.member.permissions.has('BanMembers')) {
+                            try {
+                                await member.ban({ reason: 'Banned via slash security actions' });
+                                await i.reply({
+                                    content: `<:Fine:1309230992455630949> ${member.toString()} has been banned.`,
+                                    ephemeral: true
+                                });
+                            } catch (error) {
+                                await i.reply({
+                                    content: '<:NotFine:1309235869567287296> Failed to ban the member.',
+                                    ephemeral: true
+                                });
+                            }
+                        } else {
+                            await i.reply({
+                                content: '<:PermissionsDeclined:1309230994951508031> You don\'t have permission to ban members.',
+                                ephemeral: true
+                            });
+                        }
+                        break;
 
-                    break;
-
+                    case 'kick':
+                        if (interaction.member.permissions.has('KickMembers')) {
+                            try {
+                                await member.kick('Kicked via security actions');
+                                await i.reply({
+                                    content: `<:Fine:1309230992455630949> ${member.toString()} has been kicked.`,
+                                    ephemeral: true
+                                });
+                            } catch (error) {
+                                await i.reply({
+                                    content: '<:NotFine:1309235869567287296> Failed to kick the member.',
+                                    ephemeral: true
+                                });
+                            }
+                        } else {
+                            await i.reply({
+                                content: '<:PermissionsDeclined:1309230994951508031> You don\'t have permission to kick members.',
+                                ephemeral: true
+                            });
+                        }
+                        break;
+                }
+            } catch (error) {
+                console.error('Error handling button interaction:', error);
+                try {
+                    await i.reply({
+                        content: 'An error occurred while processing your request.',
+                        ephemeral: true
+                    });
+                } catch (e) {
+                    console.error('Error sending error message:', e);
+                }
             }
-
         });
 
-
-
         collector.on('end', () => {
-
-            interaction.editReply({
-
-                components: []
-
-            }).catch(() => {});
-
+            try {
+                interaction.editReply({
+                    components: []
+                }).catch(() => {});
+            } catch (error) {
+                console.error('Error removing buttons:', error);
+            }
         });
 
     },
