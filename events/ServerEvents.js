@@ -8,7 +8,7 @@ class ServerEvents {
     async handleGuildJoin(guild) {
         const server_id = guild.id;
         const server_name = guild.name;
-        const language = "en_eu";
+        const language = "en_us";
         
         const role_logs_channel_id = null;
         const role_logs_channel_name = null;

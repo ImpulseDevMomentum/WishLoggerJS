@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 const clientManager = require('./utils/clientManager');
+const sqlite3 = require('sqlite3');
 
 const client = new Client({
     intents: [
@@ -125,6 +126,61 @@ client.once('ready', async () => {
     // Inicjalizujemy eventy
     await initializeEvents();
     
+    // Sprawdzanie i uzupełnianie serwerów w bazie danych
+    console.log('\n=== DATABASE CHECK ===');
+    const db = new sqlite3.Database('servers.db');
+    
+    try {
+        // Używamy Promise.all dla równoległego przetwarzania
+        await Promise.all(client.guilds.cache.map(async (guild) => {
+            return new Promise((resolve, reject) => {
+                db.get('SELECT role_logs_channel_id FROM servers WHERE server_id = ?', [guild.id], async (err, row) => {
+                    if (err) {
+                        console.error(`Error checking server ${guild.name}: ${err}`);
+                        resolve();
+                        return;
+                    }
+
+                    if (!row) {
+                        db.run(`
+                            INSERT INTO servers (
+                                server_id, server_name, 
+                                role_logs_channel_id, role_logs_channel_name,
+                                server_logs_channel_id, server_logs_channel_name,
+                                member_logs_channel_id, member_logs_channel_name,
+                                message_logs_channel_id, message_logs_channel_name,
+                                reaction_logs_channel_id, reaction_logs_channel_name,
+                                language
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        `, [
+                            guild.id, guild.name,
+                            null, null, // role logs
+                            null, null, // server logs
+                            null, null, // member logs
+                            null, null, // message logs
+                            null, null, // reaction logs
+                            'en_us'
+                        ], (err) => {
+                            if (err) {
+                                console.error(`Failed to add server ${guild.name} (${guild.id}): ${err}`);
+                            } else {
+                                console.log(`Added missing server to database: ${guild.name}`);
+                            }
+                            resolve();
+                        });
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        }));
+    } catch (error) {
+        console.error('Error during database check:', error);
+    } finally {
+        db.close();
+        console.log('Database check complete.\n');
+    }
+    
     console.log(`\n=== SERVER STATUS ===`);
     console.log(`Serving ${client.guilds.cache.size} servers`);
     console.log(`Bot is ready!`);
@@ -199,9 +255,4 @@ process.on('unhandledRejection', error => {
     console.error('Unhandled promise rejection:', error);
 });
 
-client.login(process.env.TOKEN); 
-
-
-
-
-
+client.login(process.env.TOKEN);
