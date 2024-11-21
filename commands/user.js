@@ -170,7 +170,7 @@ module.exports = {
 
         const userInfoEmbed = new EmbedBuilder()
 
-            .setTitle('<:Member:1247954369639481498> Member Information Card')
+            .setTitle('<:Member:1309218766089097287> Member Information Card')
 
             .setColor(member.displayHexColor)
 
@@ -317,15 +317,15 @@ module.exports = {
 
             components: createButtons('user_info'),
 
-            ephemeral: true
+            ephemeral: true,
+
+            fetchReply: true
 
         });
 
 
 
-        const collector = interaction.channel.createMessageComponentCollector({
-
-            filter: i => i.user.id === interaction.user.id,
+        const collector = response.createMessageComponentCollector({
 
             time: 60000
 
@@ -334,6 +334,20 @@ module.exports = {
 
 
         collector.on('collect', async i => {
+
+            if (i.user.id !== interaction.user.id) {
+
+                await i.reply({
+
+                    content: 'You cannot use these buttons.',
+
+                    ephemeral: true
+
+                });
+
+                return;
+
+            }
 
             switch (i.customId) {
 
