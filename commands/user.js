@@ -253,7 +253,7 @@ module.exports = {
 
             const userInfoButton = new ButtonBuilder()
 
-                .setCustomId('user_info_button')
+                .setCustomId('user_info')
 
                 .setLabel('User Information')
 
@@ -263,7 +263,7 @@ module.exports = {
 
             const securityActionsButton = new ButtonBuilder()
 
-                .setCustomId('security_actions_button')
+                .setCustomId('security_actions')
 
                 .setLabel('Security Actions')
 
@@ -273,7 +273,7 @@ module.exports = {
 
             const banButton = new ButtonBuilder()
 
-                .setCustomId('ban_button')
+                .setCustomId('ban')
 
                 .setLabel('Ban')
 
@@ -287,7 +287,7 @@ module.exports = {
 
             const kickButton = new ButtonBuilder()
 
-                .setCustomId('kick_button')
+                .setCustomId('kick')
 
                 .setLabel('Kick')
 
@@ -323,19 +323,21 @@ module.exports = {
 
 
 
-        const collector = response.createMessageComponentCollector({ time: 60000 });
+        const collector = interaction.channel.createMessageComponentCollector({
+
+            filter: i => i.user.id === interaction.user.id,
+
+            time: 60000
+
+        });
 
 
 
         collector.on('collect', async i => {
 
-            if (i.user.id !== interaction.user.id) return;
-
-
-
             switch (i.customId) {
 
-                case 'user_info_button':
+                case 'user_info':
 
                     await i.update({
 
@@ -349,7 +351,7 @@ module.exports = {
 
 
 
-                case 'security_actions_button':
+                case 'security_actions':
 
                     await i.update({
 
@@ -363,7 +365,7 @@ module.exports = {
 
 
 
-                case 'ban_button':
+                case 'ban':
 
                     if (interaction.member.permissions.has('BanMembers')) {
 
@@ -407,7 +409,7 @@ module.exports = {
 
 
 
-                case 'kick_button':
+                case 'kick':
 
                     if (interaction.member.permissions.has('KickMembers')) {
 
