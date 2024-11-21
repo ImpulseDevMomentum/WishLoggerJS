@@ -14,7 +14,7 @@ module.exports = {
     async execute(interaction) {
         if (!interaction.member.permissions.has('ManageChannels')) {
             return interaction.reply({
-                content: '<:PermDenied:1248352895854973029> You don\'t have permissions to use this command.',
+                content: '<:PermissionsDeclined:1309230994951508031> You don\'t have permissions to use this command.',
                 ephemeral: true
             });
         }
@@ -24,12 +24,12 @@ module.exports = {
         try {
             await interaction.channel.setRateLimitPerUser(seconds);
             return interaction.reply({
-                content: `<:Fine:1248352477502246932> Slowmode is set to ${seconds} second(s) on ${interaction.channel.toString()}`,
+                content: `<:Fine:1309230992455630949> Slowmode is set to ${seconds} second(s) on ${interaction.channel.toString()}`,
                 ephemeral: true
             });
         } catch (error) {
             return interaction.reply({
-                content: '<:NotFine:1248352479599661056> Failed to set slowmode. Please check my permissions and try again.',
+                content: '<:NotFine:1309235869567287296> Failed to set slowmode. Please check my permissions and try again.',
                 ephemeral: true
             });
         }

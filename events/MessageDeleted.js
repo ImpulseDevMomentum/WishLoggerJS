@@ -40,14 +40,14 @@ class MessageDelete {
                 : value;
         };
         const embed = new EmbedBuilder()
-            .setTitle(':None0: Deleted Message')
+            .setTitle(`${languageStrings.DELETED_MESSAGE_TITLE}`)
             .setColor('#FF0000');
         embed.addFields(
-            { name: ':Member: Member', value: `<@${message.author.id}> (${message.author.tag})`, inline: false }
+            { name: `${languageStrings.USER}`, value: `<@${message.author.id}> (${message.author.tag})`, inline: false }
         );
         if (truncatedContent) {
             embed.addFields({ 
-                name: ':browsefotor: Content', 
+                name: `${languageStrings.CONTENT}`, 
                 value: truncateField(truncatedContent),
                 inline: false 
             });
@@ -57,7 +57,7 @@ class MessageDelete {
                 .map(att => `[${att.name}](${att.proxyURL})`)
                 .join('\n');
             embed.addFields({ 
-                name: ':attachments: Attachments', 
+                name: `${languageStrings.ATTACHMENTS_FIELD}`, 
                 value: truncateField(attachmentsList),
                 inline: false 
             });
@@ -67,7 +67,7 @@ class MessageDelete {
                 .map(sticker => `${sticker.name}`)
                 .join('\n');
             embed.addFields({ 
-                name: ':stickers: Stickers', 
+                name: `${languageStrings.STICKERS_FIELD}`, 
                 value: truncateField(stickersList),
                 inline: false 
             });
@@ -92,7 +92,7 @@ class MessageDelete {
                 const reactionsText = reactionsInfo.join('\n');
                 if (reactionsText) {
                     embed.addFields({ 
-                        name: languageStrings.REACTIONS, 
+                        name: `${languageStrings.REACTIONS}`, 
                         value: truncateField(reactionsText),
                         inline: false 
                     });
@@ -109,8 +109,8 @@ class MessageDelete {
             });
         }
         embed.addFields(
-            { name: ':channel: Channel', value: `<#${message.channel.id}>`, inline: true },
-            { name: ':time: Today at', value: currentDateTime(), inline: true }
+            { name: `${languageStrings.CHANNEL}`, value: `<#${message.channel.id}>`, inline: true },
+            { name: `${languageStrings.TODAY_AT}`, value: currentDateTime(), inline: false }
         );
         await logChannel.send({ embeds: [embed] });
         if (attachments.size > 0) {
@@ -159,7 +159,7 @@ class MessageDelete {
             for (const sticker of stickers.values()) {
                 try {
                     const stickerEmbed = new EmbedBuilder()
-                        .setTitle(`${languageStrings.STICKER}: ${sticker.name}`)
+                        .setTitle(`${languageStrings.STICKERS_FIELD_EMOJI} Name: __${sticker.name}__`)
                         .setColor('#FF0000')
                         .setImage(sticker.url);
                     await logChannel.send({ embeds: [stickerEmbed] });

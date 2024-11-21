@@ -25,7 +25,7 @@ module.exports = {
         try {
             if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
                 return await interaction.reply({
-                    content: '<:PermDenied:1248352895854973029> You don\'t have permissions to use this command.',
+                    content: '<:PermissionsDeclined:1309230994951508031> You don\'t have permissions to use this command.',
                     ephemeral: true
                 });
             }
@@ -37,13 +37,13 @@ module.exports = {
             await updateServerLanguage(interaction.guildId, newLanguage);
 
             await interaction.reply({
-                content: `<:Fine:1248352477502246932> Bot language has been changed to **${newLanguage}**`,
+                content: `<:Fine:1309230992455630949> Bot language has been changed to **${newLanguage}**`,
                 ephemeral: true
             });
         } catch (error) {
             console.error('Error:', error);
             await interaction.reply({
-                content: '<:NotFine:1248352479599661056> An error occurred while changing the language.',
+                content: '<:NotFine:1309235869567287296> An error occurred while changing the language.',
                 ephemeral: true
             });
         }

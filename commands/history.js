@@ -32,7 +32,7 @@ module.exports = {
     async execute(interaction) {
         if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
             await interaction.reply({
-                content: "<:PermDenied:1248352895854973029> You don't have permissions to use this command.",
+                content: "<:PermissionsDeclined:1309230994951508031> You don't have permissions to use this command.",
                 ephemeral: true
             });
             return;
@@ -64,15 +64,14 @@ module.exports = {
 
         function createEmbed(user, entries, title, interactionUser) {
             const embed = new EmbedBuilder()
-                .setTitle(`<:browsefotor:1245656463163002982> ${title} for ${user.username} (${user.id})`)
+                .setTitle(`<:Member:1309218766089097287> ${title} for ${user.username} (${user.id})`)
                 .setColor(0xFF0000)
-                .setTimestamp();
 
             const displayedEntries = entries.slice(0, 25);
             for (const entry of displayedEntries) {
                 embed.addFields({
-                    name: `<:Moderator:1247954371925512243> **Action by** ${entry.executor.tag}`,
-                    value: `<:time:1247976543678894182> **Date:** ${entry.createdAt.toISOString().split('T')[0]}\n<:reason:1247971720938258565> **Reason:** ${entry.reason || 'No reason provided'}\n\u200b`,
+                    name: `<:Moderator:1309220707493744801> **Action by** ${entry.executor.tag}`,
+                    value: `<:Time:1309218770035802245> **Date:** ${entry.createdAt.toISOString().split('T')[0]}\n<:reason:1247971720938258565> **Reason:** ${entry.reason || 'No reason provided'}\n\u200b`,
                     inline: false
                 });
             }
@@ -114,7 +113,7 @@ module.exports = {
 
         if (!entries.length) {
             await interaction.reply({
-                content: `<:NotFine:1248352479599661056> No ${subcommand} records found for ${user}.`,
+                content: `<:NotFine:1309235869567287296> No ${subcommand} records found for ${user}.`,
                 ephemeral: true
             });
             return;
@@ -122,7 +121,7 @@ module.exports = {
 
         if (entries.length > 25) {
             await interaction.reply({
-                content: `<:NotFine:1248352479599661056> ${user} has too many **${subcommand}s.** They were ${subcommand}ed **${entries.length} times.**`,
+                content: `<:NotFine:1309235869567287296> ${user} has too many **${subcommand}s.** They were ${subcommand}ed **${entries.length} times.**`,
                 ephemeral: true
             });
         } else {

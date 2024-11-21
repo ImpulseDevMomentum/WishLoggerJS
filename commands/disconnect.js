@@ -16,14 +16,14 @@ module.exports = {
 
         if (!user.voice.channel) {
             return interaction.reply({
-                content: `<:NotFine:1248352479599661056> ${user.toString()} isn't in a voice channel`,
+                content: `<:NotFine:1309235869567287296> ${user.toString()} isn't in a voice channel`,
                 ephemeral: true
             });
         }
 
         if (bot.roles.highest.position <= user.roles.highest.position) {
             return interaction.reply({
-                content: `<:NotFine:1248352479599661056> I can't disconnect ${user.toString()} because their role is higher or equal to mine`,
+                content: `<:NotFine:1309235869567287296> I can't disconnect ${user.toString()} because their role is higher or equal to mine`,
                 ephemeral: true
             });
         }
@@ -32,7 +32,7 @@ module.exports = {
             member.id !== interaction.guild.ownerId &&
             !member.permissions.has('Administrator')) {
             return interaction.reply({
-                content: `<:PermDenied:1248352895854973029> You don't have permission to use this command`,
+                content: `<:PermissionsDeclined:1309230994951508031> You don't have permission to use this command`,
                 ephemeral: true
             });
         }
@@ -40,12 +40,12 @@ module.exports = {
         try {
             await user.voice.disconnect();
             return interaction.reply({
-                content: `<:Fine:1248352477502246932> ${user.toString()} has been disconnected from voice chat`,
+                content: `<:Fine:1309230992455630949> ${user.toString()} has been disconnected from voice chat`,
                 ephemeral: true
             });
         } catch (error) {
             return interaction.reply({
-                content: `<:NotFine:1248352479599661056> Failed to disconnect ${user.toString()}`,
+                content: `<:NotFine:1309235869567287296> Failed to disconnect ${user.toString()}`,
                 ephemeral: true
             });
         }

@@ -2,7 +2,6 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { PermissionFlagsBits } = require('discord.js');
 const sqlite3 = require('sqlite3').verbose();
 
-// Funkcja do inicjalizacji bazy danych
 function initializeDatabase() {
     return new Promise((resolve, reject) => {
         const db = new sqlite3.Database('servers.db');
@@ -38,7 +37,6 @@ function updateLogChannel(serverId, serverName, logType, channelLogId, channelLo
     return new Promise((resolve, reject) => {
         const db = new sqlite3.Database('servers.db');
         
-        // Najpierw sprawdź, czy serwer istnieje
         db.get('SELECT server_id FROM servers WHERE server_id = ?', [serverId], (err, row) => {
             if (err) {
                 db.close();
@@ -46,7 +44,6 @@ function updateLogChannel(serverId, serverName, logType, channelLogId, channelLo
                 return;
             }
 
-            // Jeśli serwer nie istnieje, dodaj go
             if (!row) {
                 db.run('INSERT INTO servers (server_id, server_name) VALUES (?, ?)', 
                     [serverId, serverName], (err) => {
@@ -58,7 +55,6 @@ function updateLogChannel(serverId, serverName, logType, channelLogId, channelLo
                 });
             }
 
-            // Teraz zaktualizuj kanały logów
             let sql;
             let params;
 
@@ -151,13 +147,12 @@ module.exports = {
     async execute(interaction) {
         if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
             return await interaction.reply({ 
-                content: '<:PermDenied:1248352895854973029> You don\'t have permissions to this command.',
+                content: '<:PermissionsDeclined:1309230994951508031> You don\'t have permissions to this command.',
                 ephemeral: true 
             });
         }
 
         try {
-            // Inicjalizuj bazę danych przy każdym wywołaniu komendy
             await initializeDatabase();
 
             const channel = interaction.options.getChannel('channel');
@@ -170,13 +165,13 @@ module.exports = {
 
             await updateLogChannel(serverId, serverName, logType, channelLogId, channelLogName);
             await interaction.reply({ 
-                content: `<:Fine:1248352477502246932> Logging channel for ${logType} has been set to ${channel}`,
+                content: `<:Fine:1309230992455630949> Logging channel for ${logType} has been set to ${channel}`,
                 ephemeral: true 
             });
         } catch (error) {
             console.error('Database error:', error);
             await interaction.reply({ 
-                content: '<:NotFine:1248352479599661056> There was an error while setting the logging channel.',
+                content: '<:NotFine:1309235869567287296> There was an error while setting the logging channel.',
                 ephemeral: true 
             });
         }

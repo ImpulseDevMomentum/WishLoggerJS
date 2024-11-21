@@ -18,7 +18,7 @@ module.exports = {
             !interaction.member.permissions.has('Administrator') &&
             interaction.member.id !== interaction.guild.ownerId) {
             return interaction.reply({
-                content: '<:PermDenied:1248352895854973029> You don\'t have permission to use this command',
+                content: '<:PermissionsDeclined:1309230994951508031> You don\'t have permission to use this command',
                 ephemeral: true
             });
         }
@@ -27,7 +27,7 @@ module.exports = {
         const notify = interaction.options.getBoolean('notify') ?? false;
 
         try {
-            await member.timeout(null); // Removes timeout
+            await member.timeout(null);
             
             if (notify) {
                 try {
@@ -35,19 +35,18 @@ module.exports = {
                         content: `You have been unmuted in ${interaction.guild.name}`
                     });
                 } catch (error) {
-                    // Ignore if we can't DM the user
                 }
             }
 
             return interaction.reply({
-                content: `<:Fine:1248352477502246932> ${member.toString()} has been unmuted`,
+                content: `<:Fine:1309230992455630949> ${member.toString()} has been unmuted`,
                 ephemeral: true
             });
         } catch (error) {
             return interaction.reply({
-                content: `<:NotFine:1248352479599661056> Failed to unmute ${member.toString()}.`,
+                content: `<:NotFine:1309235869567287296> Failed to unmute ${member.toString()}.`,
                 ephemeral: true
             });
         }
     },
-}; 
+};

@@ -14,42 +14,42 @@ module.exports = {
         const bots = members.filter(member => member.user.bot).size;
         
         const embed = new EmbedBuilder()
-            .setTitle('<:info:1247959011605741579> Server Information Card')
+            .setTitle('<:Custom_Profile:1309232952697163960> Server Information Card')
             .setColor(0x3498DB)
             .setThumbnail(guild.iconURL({ dynamic: true }))
             .addFields(
                 {
-                    name: '<:browsefotor:1245656463163002982> **Server Name**',
+                    name: '<:info:1309229015571234889> **Server Name**',
                     value: guild.name,
                     inline: false
                 },
                 {
-                    name: '<:ID:1247954367953240155> **Server ID**',
+                    name: '<:ID:1309218763521917040> **Server ID**',
                     value: guild.id.toString(),
                     inline: false
                 },
                 {
-                    name: '<:Owner0:1234084745932177428> **Server Owner**',
+                    name: '<:server_owner:1309242055918223360> **Server Owner**',
                     value: (await guild.fetchOwner()).user.toString(),
                     inline: false
                 },
                 {
-                    name: '<:settings:1247982015207440384> **Region**',
+                    name: '<:Settings:1309242754240483409> **Region**',
                     value: guild.preferredLocale,
                     inline: false
                 },
                 {
-                    name: '👥 **Members**',
+                    name: '<:Members:1309236553259941918> **Members**',
                     value: `Total: ${guild.memberCount}\nUsers: ${users}\nBots: ${bots}`,
                     inline: false
                 },
                 {
-                    name: '📅 **Created At**',
+                    name: '<:Time:1309218770035802245> **Created At**',
                     value: `<t:${Math.floor(guild.createdTimestamp / 1000)}:F>`,
                     inline: false
                 },
                 {
-                    name: '🔒 **Verification Level**',
+                    name: '<:Settings:1309242754240483409> **Verification Level**',
                     value: guild.verificationLevel.toString().toLowerCase().replace(/_/g, ' '),
                     inline: false
                 }

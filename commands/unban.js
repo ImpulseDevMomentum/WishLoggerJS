@@ -11,7 +11,7 @@ module.exports = {
             !interaction.member.permissions.has('Administrator') &&
             interaction.member.id !== interaction.guild.ownerId) {
             return interaction.reply({
-                content: '<:PermDenied:1248352895854973029> You don\'t have permission to use this command',
+                content: '<:PermissionsDeclined:1309230994951508031> You don\'t have permission to use this command',
                 ephemeral: true
             });
         }
@@ -21,7 +21,7 @@ module.exports = {
             
             if (bans.size === 0) {
                 return interaction.reply({
-                    content: '<:NotFine:1248352479599661056> No banned users found.',
+                    content: '<:NotFine:1309235869567287296> No banned users found.',
                     ephemeral: true
                 });
             }
@@ -70,7 +70,7 @@ module.exports = {
                         const unbanEmbed = new EmbedBuilder()
                             .setColor(0x00FF00)
                             .setTitle('User Unbanned')
-                            .setDescription(`<:Fine:1248352477502246932> Successfully unbanned ${user.tag}`)
+                            .setDescription(`<:Fine:1309230992455630949> Successfully unbanned ${user.tag}`)
                             .setThumbnail(user.displayAvatarURL({ dynamic: true }))
                             .setTimestamp();
 
@@ -81,7 +81,7 @@ module.exports = {
                         });
                     } catch (error) {
                         await i.update({
-                            content: '<:NotFine:1248352479599661056> Failed to unban the user.',
+                            content: '<:NotFine:1309235869567287296> Failed to unban the user.',
                             components: [],
                             embeds: []
                         });
@@ -139,7 +139,7 @@ module.exports = {
                     });
                 } else {
                     await modalInteraction.reply({
-                        content: `<:NotFine:1248352479599661056> No users matching '${searchQuery}' found.`,
+                        content: `<:NotFine:1309235869567287296> No users matching '${searchQuery}' found.`,
                         ephemeral: true
                     });
                 }
@@ -148,7 +148,7 @@ module.exports = {
         } catch (error) {
             console.error(error);
             return interaction.reply({
-                content: `<:Warning:1248654084500885526> An error occurred: ${error.message}`,
+                content: `<:Warning:1309230999019851816> An error occurred: ${error.message}`,
                 ephemeral: true
             });
         }

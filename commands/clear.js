@@ -17,7 +17,7 @@ module.exports = {
             !interaction.member.permissions.has('Administrator') &&
             interaction.member.id !== interaction.guild.ownerId) {
             return interaction.reply({
-                content: '<:PermDenied:1248352895854973029> You don\'t have permission to use this command.',
+                content: '<:PermissionsDeclined:1309230994951508031> You don\'t have permission to use this command.',
                 ephemeral: true
             });
         }
@@ -26,14 +26,14 @@ module.exports = {
 
         if (amount >= 100) {
             return interaction.reply({
-                content: '<:Warning:1248654084500885526> You can\'t purge more than __100__ messages',
+                content: '<:Warning:1309230999019851816> You can\'t purge more than __100__ messages',
                 ephemeral: true
             });
         }
 
         if (amount >= 50) {
             const embed = new EmbedBuilder()
-                .setTitle('<:NotFine:1248352479599661056> Warning!')
+                .setTitle('<:NotFine:1309235869567287296> Warning!')
                 .setDescription(`You're about to clear **${amount}** messages. Are you sure you want to do this?`)
                 .setColor('#FF0000');
 
@@ -64,7 +64,7 @@ module.exports = {
                 if (confirmation.customId === 'confirm_clear') {
                     await interaction.channel.bulkDelete(amount, true);
                     await confirmation.update({
-                        content: `<:Fine:1248352477502246932> You've cleared ${amount} message(s).`,
+                        content: `<:Fine:1309230992455630949> You've cleared ${amount} message(s).`,
                         embeds: [],
                         components: [],
                         ephemeral: true
@@ -88,7 +88,7 @@ module.exports = {
         } else {
             await interaction.channel.bulkDelete(amount, true);
             await interaction.reply({
-                content: `<:Fine:1248352477502246932> You've cleared ${amount} message(s).`,
+                content: `<:Fine:1309230992455630949> You've cleared ${amount} message(s).`,
                 ephemeral: true
             });
         }

@@ -32,7 +32,7 @@ module.exports = {
             });
         } catch (error) {
             await interaction.reply({
-                content: '<:NotFine:1248352479599661056> Failed to fetch invite information.',
+                content: '<:NotFine:1309235869567287296> Failed to fetch invite information.',
                 ephemeral: true
             });
         }

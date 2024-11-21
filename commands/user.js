@@ -66,25 +66,25 @@ async function checkAuditLogs(guild, userId, actionType) {
 
 
 
-// function checkWarns(userId) {
+function checkWarns(userId) {
 
-//     return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
-//         const db = new sqlite3.Database('warns.db');
+        const db = new sqlite3.Database('warns.db');
 
-//         db.get("SELECT * FROM warns WHERE UserID = ?", [userId], (err, row) => {
+        db.get("SELECT * FROM warns WHERE UserID = ?", [userId], (err, row) => {
 
-//             db.close();
+            db.close();
 
-//             if (err) reject(err);
+            if (err) reject(err);
 
-//             resolve(row !== undefined);
+            resolve(row !== undefined);
 
-//         });
+        });
 
-//     });
+    });
 
-// }
+}
 
 
 
@@ -178,25 +178,24 @@ module.exports = {
 
             .addFields(
 
-                { name: '<:browsefotor:1245656463163002982> **Displayed Username**', value: member.user.tag, inline: false },
+                { name: '<:Custom_Profile:1309232952697163960> **Displayed Username**', value: member.user.tag, inline: false },
 
-                { name: '<:ID:1247954367953240155> **User ID**', value: member.id, inline: false },
+                { name: '<:ID:1309218763521917040> **User ID**', value: member.id, inline: false },
 
-                { name: '<:info:1247959011605741579> **User roles**', value: member.roles.cache.filter(r => r.name !== '@everyone').map(r => `<@&${r.id}>`).join(' ') || 'No roles', inline: false },
+                { name: '<:info:1309229015571234889> **User roles**', value: member.roles.cache.filter(r => r.name !== '@everyone').map(r => `<@&${r.id}>`).join(' ') || 'No roles', inline: false },
 
-                { name: '<:info:1247959011605741579> **Highest role**', value: `<@&${member.roles.highest.id}>`, inline: false },
+                { name: '<:info:1309229015571234889> **Highest role**', value: `<@&${member.roles.highest.id}>`, inline: false },
 
-                // { name: '<:info:1247959011605741579> **User Badges**', value: userFlags.length ? userFlags.join(' ') : 'No badges', inline: false },
+                // { name: '<:info:1309229015571234889> **User Badges**', value: userFlags.length ? userFlags.join(' ') : 'No badges', inline: false },
 
-                { name: '<:time:1247976543678894182> **Joined Discord**', value: `${accountCreatedAt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} (${formatTimeDelta(accountCreatedAt)})`, inline: false },
+                { name: '<:Time:1309218770035802245> **Joined Discord**', value: `${accountCreatedAt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} (${formatTimeDelta(accountCreatedAt)})`, inline: false },
 
-                { name: '<:time:1247976543678894182> **Joined the server**', value: `${joinedAt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} (${formatTimeDelta(joinedAt)})`, inline: false }
+                { name: '<:Time:1309218770035802245> **Joined the server**', value: `${joinedAt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} (${formatTimeDelta(joinedAt)})`, inline: false }
 
             );
 
 
 
-        // Security checks
 
         const wasBanned = await checkAuditLogs(guild, member.id, 'BanAdd');
 
@@ -204,7 +203,7 @@ module.exports = {
 
         const wasMuted = await checkAuditLogs(guild, member.id, 'MemberUpdate');
 
-        // const wasWarned = await checkWarns(member.id);
+        const wasWarned = await checkWarns(member.id);
 
         const isSuspicious = checkSuspicious(member);
 
@@ -212,9 +211,9 @@ module.exports = {
 
         const securityIcon = (!wasBanned && !wasKicked && !wasMuted && !isSuspicious) ? 
 
-            '<:SecuritySafe:1294266337199259700>' : 
+            '<:SecuritySafe:1309245927168413728>' : 
 
-            '<:SecuritySuspicius:1294266339015266396>';
+            '<:SecuritySUS:1309245929207107664>';
 
 
 
@@ -228,23 +227,23 @@ module.exports = {
 
             .addFields(
 
-                { name: '<:browsefotor:1245656463163002982> **Displayed Username**', value: member.user.tag, inline: false },
+                { name: '<:Custom_Profile:1309232952697163960> **Displayed Username**', value: member.user.tag, inline: false },
 
-                { name: '<:ID:1247954367953240155> **User ID**', value: member.id, inline: false },
+                { name: '<:ID:1309218763521917040> **User ID**', value: member.id, inline: false },
 
-                { name: '<:banned:1247971710150377523> Was Ever Banned?', value: wasBanned ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
+                { name: '<:Banned:1309234088594374717> Was Ever Banned?', value: wasBanned ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
 
-                { name: '<:Kicked:1294264935001493555> Was Ever Kicked?', value: wasKicked ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
+                { name: '<:Kicked:1309240329953873930> Was Ever Kicked?', value: wasKicked ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
 
-                { name: '<:Muted:1247967288360173650> Was Ever Muted?', value: wasMuted ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
+                { name: '<:Microphone_Muted:1309232020613890078> Was Ever Muted?', value: wasMuted ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
 
-                // { name: '<:WarnDeleted:1282056935549436009> Was Ever Warned?', value: wasWarned ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
+                { name: '<:WarnDeleted:1309243525539299459> Was Ever Warned?', value: wasWarned ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
 
-                { name: '<:reportmessage0:1233828792368369694> Account is New', value: ((new Date() - member.user.createdAt) / (1000 * 60 * 60 * 24)) < 3 ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
+                { name: '<:Report:1309246653240311880> Account is New', value: ((new Date() - member.user.createdAt) / (1000 * 60 * 60 * 24)) < 3 ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
 
-                { name: '<:reportmessage0:1233828792368369694> No Profile Picture', value: !member.user.avatar ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
+                { name: '<:Report:1309246653240311880> No Profile Picture', value: !member.user.avatar ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true },
 
-                { name: '<:SUSSY:1247976542471061667> Suspicious Account', value: isSuspicious ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true }
+                { name: '<:SuspectedActivtie:1309234701709344889> Suspicious Account', value: isSuspicious ? '<:Enabled:1248656166498730095> **Yes**' : '<:Disabled:1248656164342988832> No', inline: true }
 
             );
 
@@ -278,7 +277,7 @@ module.exports = {
 
                 .setLabel('Ban')
 
-                // .setEmoji('<:banned:1247971710150377523>')
+                .setEmoji('<:Banned:1309234088594374717>')
 
                 .setStyle(ButtonStyle.Secondary)
 
@@ -292,7 +291,7 @@ module.exports = {
 
                 .setLabel('Kick')
 
-                // .setEmoji('<:Kicked:1294264935001493555>')
+                .setEmoji('<:Kicked:1309240329953873930>')
 
                 .setStyle(ButtonStyle.Secondary)
 
@@ -374,7 +373,7 @@ module.exports = {
 
                             await i.reply({
 
-                                content: `<:Fine:1248352477502246932> ${member.toString()} has been banned.`,
+                                content: `<:Fine:1309230992455630949> ${member.toString()} has been banned.`,
 
                                 ephemeral: true
 
@@ -384,7 +383,7 @@ module.exports = {
 
                             await i.reply({
 
-                                content: '<:NotFine:1248352479599661056> Failed to ban the member.',
+                                content: '<:NotFine:1309235869567287296> Failed to ban the member.',
 
                                 ephemeral: true
 
@@ -396,7 +395,7 @@ module.exports = {
 
                         await i.reply({
 
-                            content: '<:PermDenied:1248352895854973029> You don\'t have permission to ban members.',
+                            content: '<:PermissionsDeclined:1309230994951508031> You don\'t have permission to ban members.',
 
                             ephemeral: true
 
@@ -418,7 +417,7 @@ module.exports = {
 
                             await i.reply({
 
-                                content: `<:Fine:1248352477502246932> ${member.toString()} has been kicked.`,
+                                content: `<:Fine:1309230992455630949> ${member.toString()} has been kicked.`,
 
                                 ephemeral: true
 
@@ -428,7 +427,7 @@ module.exports = {
 
                             await i.reply({
 
-                                content: '<:NotFine:1248352479599661056> Failed to kick the member.',
+                                content: '<:NotFine:1309235869567287296> Failed to kick the member.',
 
                                 ephemeral: true
 
@@ -440,7 +439,7 @@ module.exports = {
 
                         await i.reply({
 
-                            content: '<:PermDenied:1248352895854973029> You don\'t have permission to kick members.',
+                            content: '<:PermissionsDeclined:1309230994951508031> You don\'t have permission to kick members.',
 
                             ephemeral: true
 

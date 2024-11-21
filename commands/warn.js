@@ -52,7 +52,7 @@ module.exports = {
 
             if (reason && reason.length > 720) {
                 return await interaction.reply({
-                    content: "<:NotFine:1248352479599661056> You can't use more than __720__ letters and symbols in the reason field.",
+                    content: "<:NotFine:1309235869567287296> You can't use more than __720__ letters and symbols in the reason field.",
                     ephemeral: true
                 });
             }
@@ -79,7 +79,7 @@ module.exports = {
                 await addWarn(interaction.guildId, member.id, reason, false, caseId);
                 
                 await interaction.reply({
-                    content: `<:Fine:1248352477502246932> ${member.toString()} has been warned for **${reason}** with Case ID: ${caseId}`,
+                    content: `<:Fine:1309230992455630949> ${member.toString()} has been warned for **${reason}** with Case ID: ${caseId}`,
                     ephemeral: true
                 });
             } else {
@@ -92,7 +92,7 @@ module.exports = {
                     .setCustomId(`warn_${member.id}_${caseId}`)
                     .setLabel('Warn without logging')
                     .setStyle(ButtonStyle.Danger)
-                    .setEmoji('<:NotFine:1248352479599661056>');
+                    .setEmoji('<:NotFine:1309235869567287296>');
 
                 const row = new ActionRowBuilder().addComponents(button);
 
@@ -105,7 +105,7 @@ module.exports = {
         } catch (error) {
             console.error('Error:', error);
             await interaction.reply({
-                content: '<:NotFine:1248352479599661056> An error occurred while processing the command.',
+                content: '<:NotFine:1309235869567287296> An error occurred while processing the command.',
                 ephemeral: true
             });
         }
@@ -123,8 +123,8 @@ module.exports = {
         });
 
         await interaction.followUp({
-            content: `<:Fine:1248352477502246932> ${member.toString()} has been warned for **${reason}** with Case ID: ${caseId}`,
+            content: `<:Fine:1309230992455630949> ${member.toString()} has been warned for **${reason}** with Case ID: ${caseId}`,
             ephemeral: true
         });
     }
-}; 
+};

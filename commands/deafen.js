@@ -16,14 +16,14 @@ module.exports = {
 
         if (!user.voice.channel) {
             return interaction.reply({
-                content: `<:NotFine:1248352479599661056> ${user.toString()} isn't in a voice channel`,
+                content: `<:NotFine:1309235869567287296> ${user.toString()} isn't in a voice channel`,
                 ephemeral: true
             });
         }
 
         if (bot.roles.highest.position <= user.roles.highest.position) {
             return interaction.reply({
-                content: `<:NotFine:1248352479599661056> I can't deafen/undeafen ${user.toString()} because their role is higher or equal to mine`,
+                content: `<:NotFine:1309235869567287296> I can't deafen/undeafen ${user.toString()} because their role is higher or equal to mine`,
                 ephemeral: true
             });
         }
@@ -32,7 +32,7 @@ module.exports = {
             member.id !== interaction.guild.ownerId &&
             !member.permissions.has('Administrator')) {
             return interaction.reply({
-                content: `<:PermDenied:1248352895854973029> You don't have permission to use this command`,
+                content: `<:PermissionsDeclined:1309230994951508031> You don't have permission to use this command`,
                 ephemeral: true
             });
         }
@@ -44,12 +44,12 @@ module.exports = {
             const action = newDeafenStatus ? "deafened" : "undeafened";
 
             return interaction.reply({
-                content: `<:Fine:1248352477502246932> ${user.toString()} has been ${action}`,
+                content: `<:Fine:1309230992455630949> ${user.toString()} has been ${action}`,
                 ephemeral: true
             });
         } catch (error) {
             return interaction.reply({
-                content: `<:NotFine:1248352479599661056> Failed to deafen/undeafen ${user.toString()}.`,
+                content: `<:NotFine:1309235869567287296> Failed to deafen/undeafen ${user.toString()}.`,
                 ephemeral: true
             });
         }

@@ -11,7 +11,6 @@ module.exports = {
         .setDescription('Check wish performance via command'),
 
     async execute(interaction) {
-        // Sprawdzanie uprawnień
         if (!allowedUserIds.includes(interaction.user.id)) {
             return interaction.reply({
                 content: '<:PermDenied:1248352895854973029> You do not have permission to use this command.',
@@ -20,7 +19,6 @@ module.exports = {
         }
 
         try {
-            // Pobranie informacji o systemie
             const [cpu, mem, disk, net] = await Promise.all([
                 si.currentLoad(),
                 si.mem(),
@@ -28,7 +26,6 @@ module.exports = {
                 si.networkStats()
             ]);
 
-            // Obliczenia
             const cpuUsage = cpu.currentLoad.toFixed(2);
             const cpuCount = os.cpus().length;
 
@@ -47,7 +44,6 @@ module.exports = {
 
             const uptime = (os.uptime() / 3600).toFixed(2);
 
-            // Tworzenie embeda
             const embed = new EmbedBuilder()
                 .setTitle('Server Performance Stats')
                 .setColor('#00FF00')

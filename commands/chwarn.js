@@ -104,7 +104,7 @@ module.exports = {
 
                 return await interaction.reply({
 
-                    content: `<:NotFine:1248352479599661056> No matching warnings found for the specified user and case ID **${caseId}**.`,
+                    content: `<:NotFine:1309235869567287296> No matching warnings found for the specified user and case ID **${caseId}**.`,
 
                     ephemeral: true
 
@@ -136,7 +136,7 @@ module.exports = {
 
             const channelLogId = await loadMemberLogsChannelId(interaction.guildId);
 
-            let responseMessage = `<:Fine:1248352477502246932> Successfully changed warning reason for ID **${caseId}** to **${newReason}** for ${member.toString()}`;
+            let responseMessage = `<:Fine:1309230992455630949> Successfully changed warning reason with ID ${caseId} to ${newReason} for ${member.toString()}`;
 
             if (channelLogId) {
 
@@ -210,8 +210,6 @@ module.exports = {
 
                     await warnMessage.edit({ embeds: [embedWarnLog] });
 
-                    responseMessage += ' and updated the log message.';
-
                 } else {
 
                     const embedWarnLog = new EmbedBuilder()
@@ -250,8 +248,6 @@ module.exports = {
 
                     await logChannel.send({ embeds: [embedWarnLog] });
 
-                    responseMessage += ' and created a new log message.';
-
                 }
 
             }
@@ -272,7 +268,7 @@ module.exports = {
 
             await interaction.reply({
 
-                content: '<:NotFine:1248352479599661056> An error occurred while processing the command.',
+                content: '<:NotFine:1309235869567287296> An error occurred while processing the command.',
 
                 ephemeral: true
 

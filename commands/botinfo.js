@@ -13,27 +13,22 @@ module.exports = {
             .setColor('#3498db')
             .addFields(
                 {
-                    name: '<:members:1245656464778068039> Creators',
-                    value: 'Wish is being programed by ImpulseDev',
+                    name: '<:Members:1309236553259941918> Creators',
+                    value: 'Wish is being programed & hosted by ImpulseDev',
                     inline: false
                 },
                 {
-                    name: '<:8859discordrolesfromvega:1248350895347863624> Discord Server',
+                    name: '<:Discord:1309236852741636147> Discord Server',
                     value: '[Support Server]()',
                     inline: false
                 },
                 {
-                    name: '<:1626onlineweb:1248350904051302450> Website',
+                    name: '<:Website:1309237189313433640> Website',
                     value: '[Wish Website]()',
                     inline: true
                 },
                 {
-                    name: '🤖 Discord.js Version',
-                    value: `v${version}`,
-                    inline: true
-                },
-                {
-                    name: '🏓 Ping',
+                    name: '<:Ping:1309237389876793514> Ping',
                     value: `${Math.round(interaction.client.ws.ping)}ms`,
                     inline: true
                 }

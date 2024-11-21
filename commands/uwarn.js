@@ -56,12 +56,11 @@ module.exports = {
 
             if (result > 0) {
                 const channelLogId = await loadMemberLogsChannelId(interaction.guildId);
-                let responseMessage = `<:Fine:1248352477502246932> Successfully changed user from **${member.displayName}** to **${newMember.displayName}** for warnings with reason **${reason}** ID: ${caseId}`;
+                let responseMessage = `<:Fine:1309230992455630949> Successfully changed user from **${member.displayName}** to **${newMember.displayName}** for warnings with reason **${reason}** ID: ${caseId}`;
 
                 if (channelLogId) {
                     const logChannel = interaction.guild.channels.cache.get(channelLogId);
                     
-                    // Szukamy oryginalnej wiadomości z ostrzeżeniem
                     const messages = await logChannel.messages.fetch({ limit: 100 });
                     const warnMessage = messages.find(msg => 
                         msg.embeds.length > 0 && 
@@ -114,7 +113,7 @@ module.exports = {
         } catch (error) {
             console.error('Error:', error);
             await interaction.reply({
-                content: '<:NotFine:1248352479599661056> An error occurred while processing the command.',
+                content: '<:NotFine:1309235869567287296> An error occurred while processing the command.',
                 ephemeral: true
             });
         } finally {

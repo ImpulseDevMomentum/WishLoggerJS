@@ -46,7 +46,7 @@ module.exports = {
         if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator) &&
             interaction.member.id !== interaction.guild.ownerId) {
             return interaction.reply({
-                content: '<:PermDenied:1248352895854973029> You do not have permission to use this command.',
+                content: '<:PermissionsDeclined:1309230994951508031> You do not have permission to use this command.',
                 ephemeral: true
             });
         }
@@ -88,18 +88,18 @@ module.exports = {
 
             await channel.send({ embeds: [embed] });
             return interaction.reply({
-                content: '<:Fine:1248352477502246932> Embed sent successfully!',
+                content: '<:Fine:1309230992455630949> Embed sent successfully!',
                 ephemeral: true
             });
         } catch (error) {
             if (error.message.includes('color')) {
                 return interaction.reply({
-                    content: '<:NotFine:1248352479599661056> Invalid color format. Please provide a valid [hex color code](https://www.color-hex.com). **Example** `004225`',
+                    content: '<:NotFine:1309235869567287296> Invalid color format. Please provide a valid [hex color code](https://www.color-hex.com). **Example** `004225`',
                     ephemeral: true
                 });
             }
             return interaction.reply({
-                content: '<:NotFine:1248352479599661056> Failed to send embed. Please check the channel permissions and try again.',
+                content: '<:NotFine:1309235869567287296> Failed to send embed. Please check the channel permissions and try again.',
                 ephemeral: true
             });
         }

@@ -66,7 +66,7 @@ module.exports = {
             });
 
             await interaction.reply({
-                content: `<:Fine:1248352477502246932> Warning with ID **${caseId}** for ${member.toString()} has been deleted.`,
+                content: `<:Fine:1309230992455630949> Warning with ID ${caseId} for ${member.toString()} has been deleted.`,
                 ephemeral: true
             });
 
@@ -92,11 +92,11 @@ module.exports = {
         } catch (error) {
             console.error(error);
             await interaction.reply({
-                content: '<:NotFine:1248352479599661056> An error occurred while deleting the warning.',
+                content: '<:NotFine:1309235869567287296> An error occurred while deleting the warning.',
                 ephemeral: true
             });
         } finally {
             if (db) db.close();
         }
     }
-}; 
+};

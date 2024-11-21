@@ -31,7 +31,7 @@ module.exports = {
             !interaction.member.permissions.has(PermissionFlagsBits.ManageNicknames) &&
             interaction.member.id !== interaction.guild.ownerId) {
             return await interaction.reply({
-                content: "<:Warning:1248654084500885526> You don't have permissions to use this command.",
+                content: "<:PermissionsDeclined:1309230994951508031> You don't have permissions to use this command.",
                 ephemeral: true
             });
         }
@@ -44,7 +44,7 @@ module.exports = {
         if (state[guildId]?.[userId]?.length) {
             const history = state[guildId][userId];
             const embed = new EmbedBuilder()
-                .setTitle("<:customprofile0:1233820382277144666> Nickname History")
+                .setTitle("<:Custom_Profile:1309232952697163960> Nickname History")
                 .setDescription(`Here is a log of the last ${Math.min(history.length, MAX_HISTORY_ENTRIES)} nickname changes for **${member}**:`)
                 .setColor(0x0000FF)
                 .setThumbnail(member.displayAvatarURL({ dynamic: true }));
@@ -52,7 +52,7 @@ module.exports = {
             const recentHistory = history.slice(-MAX_HISTORY_ENTRIES);
             for (const entry of recentHistory) {
                 embed.addFields({
-                    name: `<:time:1247976543678894182> ${entry.changed_at}`,
+                    name: `<:Time:1309218770035802245> ${entry.changed_at}`,
                     value: `**Old Nickname**: \`${entry.old_nick}\`\n**New Nickname**: \`${entry.new_nick}\``,
                     inline: false
                 });
@@ -63,7 +63,7 @@ module.exports = {
             await interaction.reply({ embeds: [embed], ephemeral: true });
         } else {
             await interaction.reply({
-                content: `<:Warning:1248654084500885526> No nickname history found for **${member}**.`,
+                content: `<:NotFine:1309235869567287296> No nickname history found for **${member}**.`,
                 ephemeral: true
             });
         }

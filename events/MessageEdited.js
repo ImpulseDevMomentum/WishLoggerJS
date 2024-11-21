@@ -46,7 +46,7 @@ class MessageEdit {
             const messageUrl = `https://discord.com/channels/${oldMessage.guild.id}/${oldMessage.channel.id}/${oldMessage.id}`;
 
             const embed = new EmbedBuilder()
-                .setTitle(':None0: Edited Message')
+                .setTitle(`${languageStrings.EDITED_MESSAGE_TITLE}`)
                 .setColor('#FFA500');
 
             const truncateMessage = (message) => {
@@ -59,12 +59,12 @@ class MessageEdit {
             const editedMessage = truncateMessage(newMessage.content);
 
             embed.addFields(
-                { name: ':Member: Member', value: `<@${oldMessage.author.id}> (${oldMessage.author.tag})`, inline: false },
-                { name: ':browsefotor: Original Message', value: originalMessage, inline: false },
-                { name: ':browsefotor: Edited Message', value: editedMessage, inline: false },
-                { name: languageStrings.JUMP_TO_MESSAGE, value: `[${languageStrings.CLICK_HERE}](${messageUrl})`, inline: false },
-                { name: ':channel: Channel', value: `<#${oldMessage.channel.id}>`, inline: true },
-                { name: ':time: Today at', value: currentDateTime(), inline: true }
+                { name: `${languageStrings.USER}`, value: `<@${oldMessage.author.id}> (${oldMessage.author.tag})`, inline: false },
+                { name: `${languageStrings.ORIGINAL_MESSAGE}`, value: originalMessage, inline: false },
+                { name: `${languageStrings.EDITED_MESSAGE}`, value: editedMessage, inline: false },
+                { name: `${languageStrings.JUMP_TO_MESSAGE}`, value: `[${languageStrings.CLICK_HERE}](${messageUrl})`, inline: false },
+                { name: `${languageStrings.CHANNEL}`, value: `<#${oldMessage.channel.id}>`, inline: true },
+                { name: `${languageStrings.TODAY_AT}`, value: currentDateTime(), inline: true }
             );
 
             if (oldMessage.content.length > truncateLength || newMessage.content.length > truncateLength) {

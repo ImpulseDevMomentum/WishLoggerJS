@@ -27,28 +27,27 @@ module.exports = {
 
         if (!warnings || warnings.length === 0) {
             return await interaction.reply({
-                content: "<:NotFine:1248352479599661056> No warnings found for this user.",
+                content: "<:NotFine:1309235869567287296> No warnings found for this user.",
                 ephemeral: true
             });
         }
-
         const MAX_EMBED_LENGTH = 4096;
         let embedContent = "";
         const embeds = [];
         let currentEmbed = new EmbedBuilder()
-            .setTitle(`<:Fine:1248352477502246932> Warnings for ${member.user.tag}`)
+            .setTitle(`<:Fine:1309230992455630949> Warnings for ${member.user.tag}`)
             .setColor(0x0000FF);
 
         warnings.forEach((warning, index) => {
-            const warningEntry = `**<:reportmessage0:1233828792368369694> Warning ${index + 1}**\n` +
-                `<:ID:1247954367953240155> Case ID: ${warning.CaseID}\n` +
-                `<:reason:1247971720938258565> Reason: ${warning.Reason}\n\n`;
+            const warningEntry = `**<:Warns:1309243528282378301> Warning ${index + 1}**\n` +
+                `<:ID:1309218763521917040> Case ID: ${warning.CaseID}\n` +
+                `<:Reason:1309233755445268560> Reason: ${warning.Reason}\n\n`;
 
             if (embedContent.length + warningEntry.length > MAX_EMBED_LENGTH) {
                 currentEmbed.addFields({ name: 'Warnings', value: embedContent });
                 embeds.push(currentEmbed);
                 currentEmbed = new EmbedBuilder()
-                    .setTitle(`<:Fine:1248352477502246932> Warnings for ${member.user.tag} (Continued)`)
+                    .setTitle(`<:Fine:1309230992455630949> Warnings for ${member.user.tag} (Continued)`)
                     .setColor(0x0000FF);
                 embedContent = warningEntry;
             } else {
@@ -63,9 +62,8 @@ module.exports = {
 
         await interaction.reply({ embeds: [embeds[0]], ephemeral: true });
         
-        // Wysyłamy pozostałe embedy jako followup
         for (let i = 1; i < embeds.length; i++) {
             await interaction.followUp({ embeds: [embeds[i]], ephemeral: true });
         }
     }
-}; 
+};

@@ -29,7 +29,7 @@ module.exports = {
     async handleInfo(interaction) {
         if (interaction.user.id !== interaction.guild.ownerId) {
             return interaction.reply({
-                content: '<:PermDenied:1248352895854973029> Only the server **owner** can view the configuration.',
+                content: '<:PermissionsDeclined:1309230994951508031> Only the server **owner** can view the configuration.',
                 ephemeral: true
             });
         }
@@ -41,7 +41,7 @@ module.exports = {
             if (err) {
                 console.error(err);
                 return interaction.reply({
-                    content: 'An error occurred while fetching the configuration.',
+                    content: '<:Warning:1309230999019851816> An error occurred while fetching the configuration.',
                     ephemeral: true
                 });
             }
@@ -69,7 +69,7 @@ module.exports = {
                 await interaction.reply({ embeds: [embed], ephemeral: true });
             } else {
                 await interaction.reply({
-                    content: '<:NotFine:1248352479599661056> No configuration found for this server.',
+                    content: '<:NotFine:1309235869567287296> No configuration found for this server.',
                     ephemeral: true
                 });
             }
@@ -81,14 +81,14 @@ module.exports = {
     async handleReset(interaction) {
         if (interaction.user.id !== interaction.guild.ownerId) {
             return interaction.reply({
-                content: '<:PermDenied:1248352895854973029> Only the server **owner** can reset the configuration.',
+                content: '<:PermissionsDeclined:1309230994951508031> Only the server **owner** can reset the configuration.',
                 ephemeral: true
             });
         }
 
         const embed = new EmbedBuilder()
             .setTitle('Warning')
-            .setDescription('<:Warning:1248654084500885526> You are about to reset your server configuration. Logs, channels, cache, and other configs will be set to default. Are you sure you want to proceed?')
+            .setDescription('<:Warning:1309230999019851816> You are about to reset your server configuration. Logs, channels, cache, and other configs will be set to default. Are you sure you want to proceed?')
             .setColor(0xFF0000);
 
         const button = new ButtonBuilder()
@@ -109,7 +109,7 @@ module.exports = {
         collector.on('collect', async i => {
             if (i.user.id !== interaction.guild.ownerId) {
                 await i.reply({
-                    content: '<:PermDenied:1248352895854973029> Only the server **owner** can reset the configuration.',
+                    content: '<:PermissionsDeclined:1309230994951508031> Only the server **owner** can reset the configuration.',
                     ephemeral: true
                 });
                 return;
@@ -136,14 +136,14 @@ module.exports = {
                 if (err) {
                     console.error(err);
                     await i.reply({
-                        content: 'An error occurred while resetting the configuration.',
+                        content: '<:Warning:1309230999019851816> An error occurred while resetting the configuration.',
                         ephemeral: true
                     });
                     return;
                 }
 
                 await i.reply({
-                    content: '<:Fine:1248352477502246932> Configuration has been reset.',
+                    content: '<:Fine:1309230992455630949> Configuration has been reset.',
                     ephemeral: true
                 });
             });
