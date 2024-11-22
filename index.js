@@ -1,4 +1,4 @@
-const { Client, Collection, GatewayIntentBits, REST, Routes } = require('discord.js');
+const { Client, GatewayIntentBits, Collection, REST, Routes } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
@@ -8,6 +8,7 @@ const sqlite3 = require('sqlite3');
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildEmojisAndStickers,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildVoiceStates,
@@ -92,18 +93,27 @@ async function initializeEvents() {
     
     for (const file of eventFiles) {
         const filePath = path.join(eventsPath, file);
-        const event = require(filePath);
+        const eventModule = require(filePath);
         
         try {
-            if (event.name) {
-                if (event.once) {
-                    client.once(event.name, (...args) => event.execute(...args));
-                } else {
-                    client.on(event.name, (...args) => event.execute(...args));
+            // Sprawdzamy, czy moduł zawiera wiele eventów
+            const events = [eventModule];
+            if (eventModule.emojiCreate) events.push(eventModule.emojiCreate);
+            if (eventModule.emojiDelete) events.push(eventModule.emojiDelete);
+            if (eventModule.emojiUpdate) events.push(eventModule.emojiUpdate);
+            if (eventModule.createEvent) events.push(eventModule.createEvent);
+            if (eventModule.deleteEvent) events.push(eventModule.deleteEvent);
+            if (eventModule.updateEvent) events.push(eventModule.updateEvent);
+
+            for (const event of events) {
+                if (event.name) {
+                    if (event.once) {
+                        client.once(event.name, (...args) => event.execute(...args));
+                    } else {
+                        client.on(event.name, (...args) => event.execute(...args));
+                    }
+                    console.log(`✅ Successfully loaded event: ${event.name} from ${file}`);
                 }
-                console.log(`✅ Successfully loaded event: ${file}`);
-            } else {
-                console.log(`❌ Failed to load event ${file}: Missing required "name" property`);
             }
         } catch (error) {
             console.log(`❌ Failed to load event ${file}: ${error.message}`);
@@ -113,25 +123,19 @@ async function initializeEvents() {
     console.log('\n');
 }
 
-// Event ready
 client.once('ready', async () => {
     console.log(`\n=== BOT STARTUP ===`);
     console.log(`Logged in as ${client.user.tag}`);
     
-    // Najpierw deployujemy komendy do Discorda
+
     await deployCommands();
-    
-    // Następnie inicjalizujemy komendy lokalnie
     await initializeCommands();
-    // Inicjalizujemy eventy
     await initializeEvents();
     
-    // Sprawdzanie i uzupełnianie serwerów w bazie danych
     console.log('\n=== DATABASE CHECK ===');
     const db = new sqlite3.Database('servers.db');
     
     try {
-        // Używamy Promise.all dla równoległego przetwarzania
         await Promise.all(client.guilds.cache.map(async (guild) => {
             return new Promise((resolve, reject) => {
                 db.get('SELECT role_logs_channel_id FROM servers WHERE server_id = ?', [guild.id], async (err, row) => {
@@ -154,11 +158,11 @@ client.once('ready', async () => {
                             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                         `, [
                             guild.id, guild.name,
-                            null, null, // role logs
-                            null, null, // server logs
-                            null, null, // member logs
-                            null, null, // message logs
-                            null, null, // reaction logs
+                            null, null,
+                            null, null,
+                            null, null,
+                            null, null,
+                            null, null,
                             'en_us'
                         ], (err) => {
                             if (err) {
@@ -193,7 +197,6 @@ client.once('ready', async () => {
         status: 'online'
     });
     
-    // Aktualizacja statusu przy zmianie liczby serwerów
     client.on('guildCreate', () => {
         client.user.setPresence({
             activities: [{ 
@@ -251,7 +254,7 @@ client.on('error', error => {
 });
 
 process.on('unhandledRejection', error => {
-    if (error.code === 10062) return; // Ignorujemy błędy "Unknown interaction"
+    if (error.code === 10062) return;
     console.error('Unhandled promise rejection:', error);
 });
 
