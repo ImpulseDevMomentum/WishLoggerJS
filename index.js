@@ -13,7 +13,8 @@ const client = new Client({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMessageReactions
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildWebhooks
     ]
 });
 
@@ -104,6 +105,11 @@ async function initializeEvents() {
             if (eventModule.createEvent) events.push(eventModule.createEvent);
             if (eventModule.deleteEvent) events.push(eventModule.deleteEvent);
             if (eventModule.updateEvent) events.push(eventModule.updateEvent);
+            // Dodajemy webhook eventy
+            if (eventModule.webhookCreate) events.push(eventModule.webhookCreate);
+            if (eventModule.webhookDelete) events.push(eventModule.webhookDelete);
+            if (eventModule.webhooksUpdate) events.push(eventModule.webhooksUpdate);
+            if (eventModule.webhookUpdate) events.push(eventModule.webhookUpdate);
 
             for (const event of events) {
                 if (event.name) {
