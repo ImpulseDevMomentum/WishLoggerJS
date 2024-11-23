@@ -109,6 +109,7 @@ async function initializeEvents() {
             if (eventModule.inviteCreate) events.push(eventModule.inviteCreate);
             if (eventModule.inviteDelete) events.push(eventModule.inviteDelete);
             if (eventModule.channelPinsUpdate) events.push(eventModule.channelPinsUpdate);
+            if (eventModule.messageDeleteBulk) events.push(eventModule.messageDeleteBulk);
 
             for (const event of events) {
                 if (event.name) {
