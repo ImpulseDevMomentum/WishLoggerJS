@@ -277,5 +277,10 @@
     "NO_CHANGES_DETECTED": "No changes detected",
     "RELATED_EMOJI": "Related Emoji",
     "SPOILER": "Spoiler",
-    "STICKER": "Sticker"
+    "STICKER": "Sticker",
+    "SERVER_FEATURES_UPDATE_TITLE": "Server Features Updated",
+    "FEATURES_ADDED": "Features Added",
+    "FEATURES_REMOVED": "Features Removed",
+    "VANITY_URL_UPDATE_TITLE": "Server Vanity URL Updated",
+    "VANITY_URL_CHANGED": "Vanity URL Changed"
 }
