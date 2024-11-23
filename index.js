@@ -14,16 +14,16 @@ const client = new Client({
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMessageReactions,
-        GatewayIntentBits.GuildWebhooks
+        GatewayIntentBits.GuildWebhooks,
+        GatewayIntentBits.GuildInvites,
+        GatewayIntentBits.GuildScheduledEvents
     ]
 });
 
 clientManager.setClient(client);
 
-// Kolekcja komend
 client.commands = new Collection();
 
-// Funkcja do rejestracji komend w API Discorda
 async function deployCommands() {
     const commands = [];
     const commandsPath = path.join(__dirname, 'commands');
@@ -58,7 +58,6 @@ async function deployCommands() {
     }
 }
 
-// Funkcja do inicjalizacji komend lokalnie
 async function initializeCommands() {
     const commandsPath = path.join(__dirname, 'commands');
     const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
@@ -85,7 +84,6 @@ async function initializeCommands() {
     console.log('\n');
 }
 
-// Funkcja do inicjalizacji eventów
 async function initializeEvents() {
     const eventsPath = path.join(__dirname, 'events');
     const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
@@ -97,7 +95,6 @@ async function initializeEvents() {
         const eventModule = require(filePath);
         
         try {
-            // Sprawdzamy, czy moduł zawiera wiele eventów
             const events = [eventModule];
             if (eventModule.emojiCreate) events.push(eventModule.emojiCreate);
             if (eventModule.emojiDelete) events.push(eventModule.emojiDelete);
@@ -105,11 +102,12 @@ async function initializeEvents() {
             if (eventModule.createEvent) events.push(eventModule.createEvent);
             if (eventModule.deleteEvent) events.push(eventModule.deleteEvent);
             if (eventModule.updateEvent) events.push(eventModule.updateEvent);
-            // Dodajemy webhook eventy
             if (eventModule.webhookCreate) events.push(eventModule.webhookCreate);
             if (eventModule.webhookDelete) events.push(eventModule.webhookDelete);
             if (eventModule.webhooksUpdate) events.push(eventModule.webhooksUpdate);
             if (eventModule.webhookUpdate) events.push(eventModule.webhookUpdate);
+            if (eventModule.inviteCreate) events.push(eventModule.inviteCreate);
+            if (eventModule.inviteDelete) events.push(eventModule.inviteDelete);
 
             for (const event of events) {
                 if (event.name) {
@@ -133,6 +131,47 @@ client.once('ready', async () => {
     console.log(`\n=== BOT STARTUP ===`);
     console.log(`Logged in as ${client.user.tag}`);
     
+    console.log('\n=== CHECKING BANNED SERVERS ===');
+    const disallowedPath = path.join(__dirname, 'utils/DisallowedServers.json');
+    const disallowedData = JSON.parse(fs.readFileSync(disallowedPath, 'utf8'));
+    
+    for (const guild of client.guilds.cache.values()) {
+        if (disallowedData.Banned[guild.id]) {
+            console.log(`Leaving banned server: ${guild.name} (${guild.id})`);
+            await guild.leave();
+        }
+    }
+    console.log('Banned servers check complete.\n');
+
+    console.log('\n=== CHECKING SERVERS LIST ===');
+    try {
+        await Promise.all(client.guilds.cache.map(async (guild) => {
+            if (!disallowedData.Servers[guild.id]) {
+                const serverInfo = {
+                    name: guild.name,
+                    description: guild.description || "No description",
+                    ownerId: guild.ownerId,
+                    ownerTag: (await guild.fetchOwner()).user.tag,
+                    joinedAt: new Date().toISOString()
+                };
+
+                disallowedData.Servers[guild.id] = serverInfo;
+                console.log(`Added missing server to DisallowedServers.json: ${guild.name}`);
+            }
+        }));
+
+        for (const serverId in disallowedData.Servers) {
+            if (!client.guilds.cache.has(serverId)) {
+                delete disallowedData.Servers[serverId];
+                console.log(`Removed non-existent server from DisallowedServers.json: ${serverId}`);
+            }
+        }
+
+        fs.writeFileSync(disallowedPath, JSON.stringify(disallowedData, null, 2));
+    } catch (error) {
+        console.error('Error during servers list check:', error);
+    }
+    console.log('Servers list check complete.\n');
 
     await deployCommands();
     await initializeCommands();

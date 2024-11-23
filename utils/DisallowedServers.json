@@ -1,0 +1,26 @@
+{
+  "Servers": {
+    "1302038335157702749": {
+      "name": "Pulsefy's server",
+      "description": "No description",
+      "ownerId": "706057421189152839",
+      "ownerTag": "mathischau",
+      "joinedAt": "2024-11-23T11:27:49.613Z"
+    },
+    "1309211046161940560": {
+      "name": "EMOJI2",
+      "description": "No description",
+      "ownerId": "706057421189152839",
+      "ownerTag": "mathischau",
+      "joinedAt": "2024-11-23T11:27:49.651Z"
+    },
+    "1309211015606697994": {
+      "name": "EMOJI1",
+      "description": "No description",
+      "ownerId": "706057421189152839",
+      "ownerTag": "mathischau",
+      "joinedAt": "2024-11-23T11:27:49.669Z"
+    }
+  },
+  "Banned": {}
+}

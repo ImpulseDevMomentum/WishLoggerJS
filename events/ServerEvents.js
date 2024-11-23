@@ -1,4 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
+const fs = require('fs');
+const path = require('path');
 
 class ServerEvents {
     constructor(client) {
@@ -6,6 +8,26 @@ class ServerEvents {
     }
 
     async handleGuildJoin(guild) {
+        const disallowedPath = path.join(__dirname, '../utils/DisallowedServers.json');
+        const disallowedData = JSON.parse(fs.readFileSync(disallowedPath, 'utf8'));
+
+        if (disallowedData.Banned[guild.id]) {
+            console.log(`Attempted to join banned server: ${guild.name} (${guild.id})`);
+            await guild.leave();
+            return;
+        }
+
+        const serverInfo = {
+            name: guild.name,
+            description: guild.description || "No description",
+            ownerId: guild.ownerId,
+            ownerTag: (await guild.fetchOwner()).user.tag,
+            joinedAt: new Date().toISOString()
+        };
+
+        disallowedData.Servers[guild.id] = serverInfo;
+        fs.writeFileSync(disallowedPath, JSON.stringify(disallowedData, null, 2));
+
         const server_id = guild.id;
         const server_name = guild.name;
         const language = "en_us";
@@ -53,6 +75,17 @@ class ServerEvents {
         const server_id = guild.id;
         const db = new sqlite3.Database('servers.db');
 
+        const disallowedPath = path.join(__dirname, '../utils/DisallowedServers.json');
+        const disallowedData = JSON.parse(fs.readFileSync(disallowedPath, 'utf8'));
+
+        if (!disallowedData.Banned[guild.id] && disallowedData.Servers[guild.id]) {
+            delete disallowedData.Servers[guild.id];
+            fs.writeFileSync(disallowedPath, JSON.stringify(disallowedData, null, 2));
+            console.log(`Removed server from Servers list: ${guild.name} (${guild.id})`);
+        } else if (disallowedData.Banned[guild.id]) {
+            console.log(`Server ${guild.name} (${guild.id}) remains in banned list`);
+        }
+
         return new Promise((resolve, reject) => {
             db.run(`
                 DELETE FROM servers WHERE server_id = ?
@@ -88,4 +121,4 @@ module.exports = {
             }
         });
     }
-}; 
+};
