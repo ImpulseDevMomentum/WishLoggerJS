@@ -135,7 +135,7 @@
     "SERVER_REGION_CHANGED": "**Server Region: **",
     "SERVER_OWNER_CHANGED": "**Server Owner: **",
     "SERVER_VERIFICATION_LEVEL_CHANGED": "**Server Verification Level Changed: **",
-    "SERVER_UPDATE_TITLE": "<:edit:1245656474202542162> Server Updated",
+    "SERVER_UPDATE_TITLE": "<:Edit:1309221811828949092> Server Updated",
     "CHANGES": "**Changes**",
     "TO_SV_UPDATE": "`>`",
     "WEBHOOK_CREATED_TITLE": "<:WebhookCreated:1309615759642595328> Webhook Created",
