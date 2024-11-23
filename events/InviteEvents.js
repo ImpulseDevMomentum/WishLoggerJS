@@ -165,7 +165,7 @@ class InviteEvents {
             );
 
             const auditLogs = await invite.guild.fetchAuditLogs({
-                type: 42, // INVITE_DELETE
+                type: 42,
                 limit: 1
             });
             
@@ -210,4 +210,3 @@ const inviteDelete = {
     }
 };
 module.exports = { inviteCreate, inviteDelete };
-
