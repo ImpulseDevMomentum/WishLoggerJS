@@ -131,34 +131,31 @@ module.exports = {
         const guild = interaction.guild;
 
 
+        const userFlags = [
 
-        // Tworzenie embeda z informacjami o użytkowniku
+            member.user.flags?.has('HOUSE_BRILLIANCE') ? '<:Brilliance:1309971160913543179>' : '',
 
-        // const userFlags = [
+            member.user.flags?.has('HOUSE_BALANCE') ? '<:Balance:1309971158078062632>' : '',
 
-        //     member.user.flags?.has('HOUSE_BRILLIANCE') ? '<:HypeSquad20:1234084736826347570>' : '',
+            member.user.flags?.has('HOUSE_BRAVERY') ? '<:Bravery:1309971159059796009>' : '',
 
-        //     member.user.flags?.has('HOUSE_BALANCE') ? '<:HypeSquad10:1234084738550071326>' : '',
+            member.user.flags?.has('ACTIVE_DEVELOPER') ? '<:DiscordActiveDeveloper:1309970625204326400>' : '',
 
-        //     member.user.flags?.has('HOUSE_BRAVERY') ? '<:HypeSquad00:1234084739921608784>' : '',
+            member.user.flags?.has('EARLY_VERIFIED_BOT_DEVELOPER') ? '<:DiscordEarlyBotDeveloper:1309970627628896316>' : '',
 
-        //     member.user.flags?.has('ACTIVE_DEVELOPER') ? '<:ActiveDev0:1234084733986799668>' : '',
+            member.user.flags?.has('PARTNER') ? '<:DiscordPartner:1309970629512003604>' : '',
 
-        //     member.user.flags?.has('EARLY_VERIFIED_BOT_DEVELOPER') ? '<:EarlyDev0:1234084744635875338>' : '',
+            member.premiumSince ? '<:Booster:1309970614236348457>' : '',
 
-        //     member.user.flags?.has('PARTNER') ? '<:Partner0:1234084741125247028>' : '',
+            guild.ownerId === member.id ? '<:server_owner:1309242055918223360>' : '',
 
-        //     member.premiumSince ? '<:Booster2:1261343522188169227>' : '',
+            member.user.flags?.has('DISCORD_CERTIFIED_MODERATOR') ? '<:CertifiedModerator:1309970621840756791>' : '',
 
-        //     guild.ownerId === member.id ? '<:Owner0:1234084745932177428>' : '',
+            member.user.bot && !member.user.flags?.has('VERIFIED_BOT') ? '<:discord_app:1309253501309681724>' : '',
 
-        //     member.user.flags?.has('DISCORD_CERTIFIED_MODERATOR') ? '<:DiscordStaff:1261343775255433237>' : '',
+            member.user.bot && member.user.flags?.has('VERIFIED_BOT') ? '<:verified_app:1309253503146922064>' : '',
 
-        //     member.user.bot && !member.user.flags?.has('VERIFIED_BOT') ? '<:discordapp0:1234105198956515361>' : '',
-
-        //     member.user.bot && member.user.flags?.has('VERIFIED_BOT') ? '<:verifiedapp0:1234105200411938938>' : '',
-
-        // ].filter(Boolean);
+        ].filter(Boolean);
 
 
 
@@ -186,7 +183,7 @@ module.exports = {
 
                 { name: '<:info:1309229015571234889> **Highest role**', value: `<@&${member.roles.highest.id}>`, inline: false },
 
-                // { name: '<:info:1309229015571234889> **User Badges**', value: userFlags.length ? userFlags.join(' ') : 'No badges', inline: false },
+                { name: '<:info:1309229015571234889> **User Badges**', value: userFlags.length ? userFlags.join(' ') : 'No badges', inline: false },
 
                 { name: '<:Time:1309218770035802245> **Joined Discord**', value: `${accountCreatedAt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} (${formatTimeDelta(accountCreatedAt)})`, inline: false },
 
