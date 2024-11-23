@@ -57,7 +57,7 @@
     "KICKED_ACTION": "**Kicked**",
     "USER_LEFT_ACTION": "**User left the server**",
     "UNKNOWN": "**Unknow**",
-    "UNBANNED_USER_TITLE": "<:MemberUnbanned:1247987885378899969> User Unbanned",
+    "UNBANNED_USER_TITLE": "<:UserUnbanned:1309893899992698930> User Unbanned",
     "INVITE_CREATED_TITLE": "<:InviteCreated:1309637749753774143> New Invite Created",
     "INVITE_DELETED_TITLE": "<:InviteDeleted:1309637752978931784> Invite Was Deleted",
     "INVITE_LINK": "<:info:1309229015571234889> **Invite Link**",
