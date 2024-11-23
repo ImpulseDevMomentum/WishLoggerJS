@@ -148,7 +148,7 @@
     "WEBHOOK_UPDATED": "**Webhook Updated**",
     "TO": "`>`",
     "WEBHOOK_UPDATED_TITLE": "<:WebhookModified:1309615769545478164> Webhook `{new_name}` Updated",
-    "REACTION_REMOVED_TITLE": "<:RemovedEmoji:1248327893583401041> Reaction Removed",
+    "REACTION_REMOVED_TITLE": "<:EmojiDeleted:1309593789232578560> Reaction Removed",
     "MESSAGE": "<:Link:1309228121442091078> **Jump To Message**",
     "EMOJI": "<:Symbols:1309222418128306348> **Emoji**",
     "MESSAGE_CONTENT": "<:Content:1309221809928798309> **Message Content**",
