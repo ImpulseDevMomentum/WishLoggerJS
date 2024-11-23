@@ -166,7 +166,7 @@
     "EVENT_ID": "**Event ID**",
     "DESCRIPTION_EVENT": "**Description**",
     "PRIVACY_LEVEL": "**Privacy Level**",
-    "MASS_REACTIONS_CLEARED_TITLE": "<:RemovedEmoji:1248327893583401041> Mass Reactions Cleared",
+    "MASS_REACTIONS_CLEARED_TITLE": "<:EmojiDeleted:1309593789232578560> Mass Reactions Cleared",
     "NEVER": "Never",
     "NO": "No",
     "ORIGINAL_MESSAGE_TOO_LONG": "<:reportmessage0:1233828792368369694> **Original Message Was Too Long**",
