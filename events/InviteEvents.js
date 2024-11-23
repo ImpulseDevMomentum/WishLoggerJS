@@ -2,8 +2,11 @@ const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const { getServerLanguage, loadServerLogsChannelId, currentDateTime } = require('../utils/imports');
 
-const processedInvites = new Set();
-const DEBOUNCE_TIME = 5000;
+let loggedInvites = {};
+let inviteCache = {};
+
+
+// Napraw błedy zwiazane z podwójnym logowaniem invite linkow przy InviteCreate. 
 
 class InviteEvents {
     constructor(client) {
@@ -17,19 +20,6 @@ class InviteEvents {
                 return;
             }
 
-            const inviteKey = `${invite.guild.id}-${invite.code}`;
-            
-            if (processedInvites.has(inviteKey)) {
-                // console.log(`Skipping duplicate invite: ${invite.code}`);
-                return;
-            }
-
-            processedInvites.add(inviteKey);
-
-            setTimeout(() => {
-                processedInvites.delete(inviteKey);
-            }, DEBOUNCE_TIME);
-
             const serverLanguage = await getServerLanguage(invite.guild.id);
             const languageStrings = JSON.parse(
                 fs.readFileSync(`language/${serverLanguage}.json`, 'utf8')
@@ -39,63 +29,75 @@ class InviteEvents {
             const logsChannel = invite.guild.channels.cache.get(channelLogId);
 
             if (!logsChannel) {
-                // console.error(`Logs channel not found for guild: ${invite.guild.id}`);
+                console.error(`Logs channel not found for guild: ${invite.guild.id}`);
                 return;
             }
 
-            const embed = new EmbedBuilder()
-                .setTitle(languageStrings.INVITE_CREATED_TITLE)
-                .setColor('#00FF00')
-                .addFields(
-                    { name: languageStrings.INVITE_LINK, value: `https://discord.gg/${invite.code}`, inline: false },
-                    { name: languageStrings.MAX_USES, value: invite.maxUses ? invite.maxUses.toString() : languageStrings.UNLIMITED, inline: true }
+            if (!loggedInvites[invite.code] && !inviteCache[invite.guild.id]?.[invite.code]) {
+                loggedInvites[invite.code] = true;
+
+                const embed = new EmbedBuilder()
+                    .setTitle(languageStrings.INVITE_CREATED_TITLE)
+                    .setColor('#00FF00')
+                    .addFields(
+                        { name: languageStrings.INVITE_LINK, value: `https://discord.gg/${invite.code}`, inline: false },
+                        { name: languageStrings.MAX_USES, value: invite.maxUses ? invite.maxUses.toString() : languageStrings.UNLIMITED, inline: true }
+                    );
+
+                if (invite.channel) {
+                    embed.addFields({
+                        name: languageStrings.CHANNEL_INVITE.replace("{channel_name}", invite.channel.name),
+                        value: "\u200B",
+                        inline: true
+                    });
+                } else if (invite.stageInstance) {
+                    embed.addFields({
+                        name: languageStrings.STAGE_INVITE.replace("{channel_name}", invite.stageInstance.channel.name),
+                        value: "\u200B",
+                        inline: true
+                    });
+                } else if (invite.guildScheduledEvent) {
+                    embed.addFields({
+                        name: languageStrings.EVENT_INVITE.replace("{event_name}", invite.guildScheduledEvent.name),
+                        value: "\u200B",
+                        inline: true
+                    });
+                }
+
+                embed.addFields(
+                    { 
+                        name: languageStrings.EXPIRES_AT, 
+                        value: invite.expiresAt ? invite.expiresAt.toLocaleString() : languageStrings.NEVER, 
+                        inline: true 
+                    },
+                    { 
+                        name: languageStrings.TEMPORARY, 
+                        value: invite.temporary ? languageStrings.YES : languageStrings.NO, 
+                        inline: true 
+                    },
+                    { 
+                        name: languageStrings.CREATED_VIA, 
+                        value: invite.inviter ? invite.inviter.toString() : languageStrings.UNKNOWN, 
+                        inline: false 
+                    },
+                    { 
+                        name: languageStrings.TODAY_AT, 
+                        value: currentDateTime(), 
+                        inline: true 
+                    }
                 );
 
-            if (invite.channel) {
-                embed.addFields({
-                    name: languageStrings.CHANNEL_INVITE.replace("{channel_name}", invite.channel.name),
-                    value: "\u200b",
-                    inline: true
-                });
-            } else if (invite.stageInstance) {
-                embed.addFields({
-                    name: languageStrings.STAGE_INVITE.replace("{channel_name}", invite.stageInstance.channel.name),
-                    value: "\u200b",
-                    inline: true
-                });
-            } else if (invite.guildScheduledEvent) {
-                embed.addFields({
-                    name: languageStrings.EVENT_INVITE.replace("{event_name}", invite.guildScheduledEvent.name),
-                    value: "\u200b",
-                    inline: true
-                });
+                const invites = await invite.guild.invites.fetch();
+                inviteCache[invite.guild.id] = Object.fromEntries(
+                    invites.map(inv => [inv.code, inv.uses])
+                );
+
+                await logsChannel.send({ embeds: [embed] });
+
+                setTimeout(() => {
+                    delete loggedInvites[invite.code];
+                }, 15000);
             }
-
-            embed.addFields(
-                { 
-                    name: languageStrings.EXPIRES_AT, 
-                    value: invite.expiresAt ? invite.expiresAt.toLocaleString() : languageStrings.NEVER, 
-                    inline: true 
-                },
-                { 
-                    name: languageStrings.TEMPORARY, 
-                    value: invite.temporary ? languageStrings.YES : languageStrings.NO, 
-                    inline: true 
-                },
-                { 
-                    name: languageStrings.CREATED_VIA, 
-                    value: invite.inviter ? invite.inviter.toString() : languageStrings.UNKNOWN, 
-                    inline: false 
-                },
-                { 
-                    name: languageStrings.TODAY_AT, 
-                    value: currentDateTime(), 
-                    inline: true 
-                }
-            );
-
-            await logsChannel.send({ embeds: [embed] });
-
         } catch (error) {
             console.error('Error in handleInviteCreate:', error);
         }
@@ -108,30 +110,16 @@ class InviteEvents {
                 return;
             }
 
-            const guildId = invite.guild.id;
-            const inviteKey = `${guildId}-${invite.code}`;
-
-            if (processedInvites.has(inviteKey)) {
-                // console.log(`Skipping duplicate invite delete: ${invite.code}`);
-                return;
-            }
-
-            processedInvites.add(inviteKey);
-
-            setTimeout(() => {
-                processedInvites.delete(inviteKey);
-            }, DEBOUNCE_TIME);
-
-            const serverLanguage = await getServerLanguage(guildId);
+            const serverLanguage = await getServerLanguage(invite.guild.id);
             const languageStrings = JSON.parse(
                 fs.readFileSync(`language/${serverLanguage}.json`, 'utf8')
             );
 
-            const channelLogId = await loadServerLogsChannelId(guildId);
+            const channelLogId = await loadServerLogsChannelId(invite.guild.id);
             const logsChannel = invite.guild.channels.cache.get(channelLogId);
 
             if (!logsChannel) {
-                // console.error(`Logs channel not found for guild: ${guildId}`);
+                console.error(`Logs channel not found for guild: ${invite.guild.id}`);
                 return;
             }
 
@@ -146,19 +134,19 @@ class InviteEvents {
             if (invite.channel) {
                 embed.addFields({
                     name: languageStrings.CHANNEL_INVITE.replace("{channel_name}", invite.channel.name),
-                    value: "\u200b",
+                    value: "\u200B",
                     inline: true
                 });
             } else if (invite.stageInstance) {
                 embed.addFields({
                     name: languageStrings.STAGE_INVITE.replace("{channel_name}", invite.stageInstance.channel.name),
-                    value: "\u200b",
+                    value: "\u200B",
                     inline: true
                 });
             } else if (invite.guildScheduledEvent) {
                 embed.addFields({
                     name: languageStrings.EVENT_INVITE.replace("{event_name}", invite.guildScheduledEvent.name),
-                    value: "\u200b",
+                    value: "\u200B",
                     inline: true
                 });
             }
@@ -177,7 +165,7 @@ class InviteEvents {
             );
 
             const auditLogs = await invite.guild.fetchAuditLogs({
-                type: 42,
+                type: 42, // INVITE_DELETE
                 limit: 1
             });
             
@@ -221,5 +209,5 @@ const inviteDelete = {
         await inviteEvents.handleInviteDelete(invite);
     }
 };
-
 module.exports = { inviteCreate, inviteDelete };
+
