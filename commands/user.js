@@ -133,27 +133,41 @@ module.exports = {
 
         const userFlags = [
 
-            member.user.flags?.has('HOUSE_BRILLIANCE') ? '<:Brilliance:1309971160913543179>' : '',
+            member.user.flags?.has('HypeSquadOnlineHouse2') ? '<:Brilliance:1309971160913543179>' : '',
 
-            member.user.flags?.has('HOUSE_BALANCE') ? '<:Balance:1309971158078062632>' : '',
+            member.user.flags?.has('HypeSquadOnlineHouse3') ? '<:Balance:1309971158078062632>' : '',
 
-            member.user.flags?.has('HOUSE_BRAVERY') ? '<:Bravery:1309971159059796009>' : '',
+            member.user.flags?.has('HypeSquadOnlineHouse1') ? '<:Bravery:1309971159059796009>' : '',
 
-            member.user.flags?.has('ACTIVE_DEVELOPER') ? '<:DiscordActiveDeveloper:1309970625204326400>' : '',
+            member.user.flags?.has('ActiveDeveloper') ? '<:DiscordActiveDeveloper:1309970625204326400>' : '',
 
-            member.user.flags?.has('EARLY_VERIFIED_BOT_DEVELOPER') ? '<:DiscordEarlyBotDeveloper:1309970627628896316>' : '',
+            member.user.flags?.has('VerifiedDeveloper') ? '<:DiscordEarlyBotDeveloper:1309970627628896316>' : '',
 
-            member.user.flags?.has('PARTNER') ? '<:DiscordPartner:1309970629512003604>' : '',
+            member.user.flags?.has('Partner') ? '<:DiscordPartner:1309970629512003604>' : '',
+
+            member.premiumType === 1 ? '<:Nitro:1309975080998146098>' : '',
+
+            member.premiumType === 2 ? '<:Nitro:1309975080998146098>' : '',
+
+            member.premiumType === 3 ? '<:Nitro:1309975080998146098>' : '',
 
             member.premiumSince ? '<:Booster:1309970614236348457>' : '',
 
             guild.ownerId === member.id ? '<:server_owner:1309242055918223360>' : '',
 
-            member.user.flags?.has('DISCORD_CERTIFIED_MODERATOR') ? '<:CertifiedModerator:1309970621840756791>' : '',
+            member.user.flags?.has('CertifiedModerator') ? '<:CertifiedModerator:1309970621840756791>' : '',
 
-            member.user.bot && !member.user.flags?.has('VERIFIED_BOT') ? '<:discord_app:1309253501309681724>' : '',
+            member.user.bot && !member.user.flags?.has('VerifiedBot') ? '<:discord_app:1309253501309681724>' : '',
 
-            member.user.bot && member.user.flags?.has('VERIFIED_BOT') ? '<:verified_app:1309253503146922064>' : '',
+            member.user.bot && member.user.flags?.has('VerifiedBot') ? '<:verified_app:1309253503146922064>' : '',
+
+            member.user.flags?.has('PremiumEarlySupporter') ? '<:EarlySupporter:TWOJ_ID_EMOJI>' : '',
+
+            member.user.flags?.has('BugHunterLevel1') ? '<:BadgeHunter1:1309973627424342140>' : '',
+
+            member.user.flags?.has('BugHunterLevel2') ? '<:BadgeHunter2:1309973629685207140>' : '',
+
+            member.user.flags?.has('Staff') ? '<:CertifiedModerator:1309970621840756791>' : '',
 
         ].filter(Boolean);
 
