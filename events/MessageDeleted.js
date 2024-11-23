@@ -52,67 +52,28 @@ class MessageDelete {
                 inline: false 
             });
         }
-        if (attachments.size > 0) {
-            const attachmentsList = Array.from(attachments.values())
-                .map(att => `[${att.name}](${att.proxyURL})`)
-                .join('\n');
-            embed.addFields({ 
-                name: `${languageStrings.ATTACHMENTS_FIELD}`, 
-                value: truncateField(attachmentsList),
-                inline: false 
-            });
-        }
-        if (stickers.size > 0) {
-            const stickersList = Array.from(stickers.values())
-                .map(sticker => `${sticker.name}`)
-                .join('\n');
-            embed.addFields({ 
-                name: `${languageStrings.STICKERS_FIELD}`, 
-                value: truncateField(stickersList),
-                inline: false 
-            });
-        }
-        if (reactions && reactions.cache.size > 0) {
-            try {
-                const reactionsInfo = [];
-                for (const reaction of reactions.cache.values()) {
-                    let emojiString;
-                    const emoji = reaction.emoji;
-                    if (emoji.id) {
-                        if (emoji.animated) {
-                            emojiString = `<a:${emoji.name}:${emoji.id}>`;
-                        } else {
-                            emojiString = `<:${emoji.name}:${emoji.id}>`;
-                        }
-                    } else {
-                        emojiString = emoji.name;
-                    }
-                    reactionsInfo.push(`${emojiString} (${reaction.count})`);
-                }
-                const reactionsText = reactionsInfo.join('\n');
-                if (reactionsText) {
-                    embed.addFields({ 
-                        name: `${languageStrings.REACTIONS}`, 
-                        value: truncateField(reactionsText),
-                        inline: false 
-                    });
-                }
-            } catch (error) {
-                console.error('Error processing reactions:', error);
-            }
-        }
-        if (warningMessage) {
-            embed.addFields({ 
-                name: languageStrings.WARNING_LINK_IN_MESSAGE, 
-                value: truncateField(warningMessage),
-                inline: false 
-            });
-        }
         embed.addFields(
             { name: `${languageStrings.CHANNEL}`, value: `<#${message.channel.id}>`, inline: true },
             { name: `${languageStrings.TODAY_AT}`, value: currentDateTime(), inline: false }
         );
         await logChannel.send({ embeds: [embed] });
+        if (content && content.length > truncateLength) {
+            const fileName = `deleted_message_${message.id}.txt`;
+            const fileContent = 
+                `${languageStrings.MESSAGE_DELETED_FULL}\n${content}`;
+            
+            fs.writeFileSync(fileName, fileContent, 'utf8');
+            
+            try {
+                await logChannel.send({
+                    files: [fileName]
+                });
+                
+                fs.unlinkSync(fileName);
+            } catch (error) {
+                console.error('Error sending full message content:', error);
+            }
+        }
         if (attachments.size > 0) {
             const processedFiles = new Set();
             for (const attachment of attachments.values()) {
@@ -183,4 +144,4 @@ module.exports = {
             console.error('Error in messageDelete event:', error);
         }
     }
-}; 
+};
