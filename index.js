@@ -108,6 +108,7 @@ async function initializeEvents() {
             if (eventModule.webhookUpdate) events.push(eventModule.webhookUpdate);
             if (eventModule.inviteCreate) events.push(eventModule.inviteCreate);
             if (eventModule.inviteDelete) events.push(eventModule.inviteDelete);
+            if (eventModule.channelPinsUpdate) events.push(eventModule.channelPinsUpdate);
 
             for (const event of events) {
                 if (event.name) {

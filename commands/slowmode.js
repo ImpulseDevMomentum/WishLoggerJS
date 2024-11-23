@@ -24,7 +24,7 @@ module.exports = {
         try {
             await interaction.channel.setRateLimitPerUser(seconds);
             return interaction.reply({
-                content: `<:Fine:1309230992455630949> Slowmode is set to ${seconds} second(s) on ${interaction.channel.toString()}`,
+                content: `<:Slowmode:1309862887233163314> Slowmode is set to ${seconds} second(s) on ${interaction.channel.toString()}`,
                 ephemeral: true
             });
         } catch (error) {
