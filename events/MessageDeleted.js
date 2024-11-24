@@ -1,5 +1,5 @@
 const fs = require('fs');
-
+const { EmbedBuilder } = require('discord.js');
 const { getServerLanguage, loadMessageLogsChannelId, currentDateTime } = require('../utils/imports');
 
 
