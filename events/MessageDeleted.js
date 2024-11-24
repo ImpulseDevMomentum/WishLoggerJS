@@ -50,6 +50,22 @@ class MessageDelete {
                 inline: false 
             });
         }
+        if (reactions.cache.size > 0) {
+            const reactionsList = reactions.cache
+                .map(reaction => {
+                    const emoji = reaction.emoji.id 
+                        ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` 
+                        : reaction.emoji.name;
+                    return `${emoji} (${reaction.count})`
+                })
+                .join(' | ');
+            
+            embed.addFields({ 
+                name: `${languageStrings.REACTIONS}`, 
+                value: reactionsList,
+                inline: false 
+            });
+        }
         embed.addFields(
             { name: `${languageStrings.CHANNEL}`, value: `<#${message.channel.id}>`, inline: true },
             { name: `${languageStrings.TODAY_AT}`, value: currentDateTime(), inline: false }
