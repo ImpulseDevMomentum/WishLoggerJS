@@ -10,6 +10,8 @@ const clientManager = require('./utils/clientManager');
 
 const sqlite3 = require('sqlite3');
 
+const ServerEvents = require('./events/ServerEvents');
+
 
 
 const client = new Client({
@@ -276,6 +278,10 @@ client.once('ready', async () => {
 
     
 
+    ServerEvents.execute(client);
+
+    
+
     console.log('\n=== CHECKING BANNED SERVERS ===');
 
     const disallowedPath = path.join(__dirname, 'utils/DisallowedServers.json');
@@ -493,46 +499,6 @@ client.once('ready', async () => {
         }],
 
         status: 'online'
-
-    });
-
-    
-
-    client.on('guildCreate', () => {
-
-        client.user.setPresence({
-
-            activities: [{ 
-
-                name: `/help | ${client.guilds.cache.size} servers`,
-
-                type: 3
-
-            }],
-
-            status: 'online'
-
-        });
-
-    });
-
-
-
-    client.on('guildDelete', () => {
-
-        client.user.setPresence({
-
-            activities: [{ 
-
-                name: `/help | ${client.guilds.cache.size} servers`,
-
-                type: 3
-
-            }],
-
-            status: 'online'
-
-        });
 
     });
 

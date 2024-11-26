@@ -28,53 +28,58 @@ class ServerEvents {
         disallowedData.Servers[guild.id] = serverInfo;
         fs.writeFileSync(disallowedPath, JSON.stringify(disallowedData, null, 2));
 
-        const server_id = guild.id;
-        const server_name = guild.name;
-        const language = "en_us";
-        
-        const role_logs_channel_id = null;
-        const role_logs_channel_name = null;
-        const server_logs_channel_id = null;
-        const server_logs_channel_name = null;
-        const member_logs_channel_id = null;
-        const member_logs_channel_name = null;
-        const message_logs_channel_id = null;
-        const message_logs_channel_name = null;
-        const reaction_logs_channel_id = null;
-        const reaction_logs_channel_name = null;
-
         const db = new sqlite3.Database('servers.db');
         
-        return new Promise((resolve, reject) => {
-            db.run(`
-                INSERT INTO servers (
-                    server_id, server_name, role_logs_channel_id, role_logs_channel_name, 
-                    server_logs_channel_id, server_logs_channel_name, 
-                    member_logs_channel_id, member_logs_channel_name, 
-                    message_logs_channel_id, message_logs_channel_name, 
-                    reaction_logs_channel_id, reaction_logs_channel_name, 
-                    language
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            `, [
-                server_id, server_name, role_logs_channel_id, role_logs_channel_name, 
-                server_logs_channel_id, server_logs_channel_name, 
-                member_logs_channel_id, member_logs_channel_name, 
-                message_logs_channel_id, message_logs_channel_name, 
-                reaction_logs_channel_id, reaction_logs_channel_name, 
-                language
-            ], (err) => {
-                db.close();
-                if (err) reject(err);
-                else resolve();
+        try {
+            // First check if server already exists
+            const exists = await new Promise((resolve, reject) => {
+                db.get('SELECT server_id FROM servers WHERE server_id = ?', [guild.id], (err, row) => {
+                    if (err) reject(err);
+                    else resolve(row ? true : false);
+                });
             });
+
+            if (!exists) {
+                await new Promise((resolve, reject) => {
+                    db.run(`
+                        INSERT INTO servers (
+                            server_id, server_name, 
+                            role_logs_channel_id, role_logs_channel_name,
+                            server_logs_channel_id, server_logs_channel_name,
+                            member_logs_channel_id, member_logs_channel_name,
+                            message_logs_channel_id, message_logs_channel_name,
+                            reaction_logs_channel_id, reaction_logs_channel_name,
+                            language
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    `, [
+                        guild.id, guild.name,
+                        null, null,
+                        null, null,
+                        null, null,
+                        null, null,
+                        null, null,
+                        'en_us'
+                    ], (err) => {
+                        if (err) reject(err);
+                        else resolve();
+                    });
+                });
+            }
+        } finally {
+            db.close();
+        }
+
+        // Update presence after database operations
+        this.client.user.setPresence({
+            activities: [{ 
+                name: `/help | ${this.client.guilds.cache.size} servers`,
+                type: 3
+            }],
+            status: 'online'
         });
     }
 
     async handleGuildRemove(guild) {
-        const server_id = guild.id;
-        const db = new sqlite3.Database('servers.db');
-
         const disallowedPath = path.join(__dirname, '../utils/DisallowedServers.json');
         const disallowedData = JSON.parse(fs.readFileSync(disallowedPath, 'utf8'));
 
@@ -86,14 +91,26 @@ class ServerEvents {
             console.log(`Server ${guild.name} (${guild.id}) remains in banned list`);
         }
 
-        return new Promise((resolve, reject) => {
-            db.run(`
-                DELETE FROM servers WHERE server_id = ?
-            `, [server_id], (err) => {
-                db.close();
-                if (err) reject(err);
-                else resolve();
+        const db = new sqlite3.Database('servers.db');
+        
+        try {
+            await new Promise((resolve, reject) => {
+                db.run('DELETE FROM servers WHERE server_id = ?', [guild.id], (err) => {
+                    if (err) reject(err);
+                    else resolve();
+                });
             });
+        } finally {
+            db.close();
+        }
+
+        // Update presence after database operations
+        this.client.user.setPresence({
+            activities: [{ 
+                name: `/help | ${this.client.guilds.cache.size} servers`,
+                type: 3
+            }],
+            status: 'online'
         });
     }
 }
