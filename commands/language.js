@@ -12,11 +12,11 @@ module.exports = {
                 .setDescription('Select language')
                 .addChoices(
                     { name: 'English', value: 'en_us' },
-                    { name: 'Polish', value: 'pl_pl' },
-                    { name: 'Czech', value: 'cs_cs' },
+                    { name: 'Polish', value: 'pl' },
+                    { name: 'Czech', value: 'cs' },
                     { name: 'Russian', value: 'ru' },
-                    { name: 'Spanish', value: 'es_es' },
-                    { name: 'German', value: 'ger_ger' }
+                    { name: 'Spanish', value: 'es' },
+                    { name: 'German', value: 'ger' }
                 )
                 .setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
