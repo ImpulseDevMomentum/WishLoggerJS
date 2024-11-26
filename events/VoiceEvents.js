@@ -196,6 +196,8 @@ class VoiceEvents {
             if (oldState.streaming !== newState.streaming && newState.channel) {
                 if (oldState.channel) {
                     const memberStatus = await this.getMemberStatus(member);
+                    const usersOnChannel = Array.from(newState.channel.members.values())
+                        .filter(user => user.id !== member.id);
                     const embed = new EmbedBuilder()
                         .setTitle(newState.streaming ? 
                             languageStrings.STREAM_STARTED_TITLE : 
@@ -212,10 +214,31 @@ class VoiceEvents {
                                 name: languageStrings.VC_NAME, 
                                 value: `<#${newState.channel.id}>`, 
                                 inline: false 
-                            },
-                            { name: languageStrings.TODAY_AT, value: currentDateTime(), inline: true }
+                            }
                         );
 
+                    if (usersOnChannel.length > 0) {
+                        const usersList = await Promise.all(usersOnChannel
+                            .slice(0, 7)
+                            .map(async user => {
+                                const status = await this.getMemberStatus(user);
+                                return `${user.toString()} (${user.nickname || user.user.username}) ${status}`;
+                            }));
+
+                        let usersListStr = usersList.join(', ');
+
+                        if (usersOnChannel.length > 7) {
+                            usersListStr += `, and ${usersOnChannel.length - 7} more`;
+                        }
+
+                        embed.addFields({ 
+                            name: languageStrings.USERS_ON_CHANNEL, 
+                            value: usersListStr, 
+                            inline: false 
+                        });
+                    }
+
+                    embed.addFields({ name: languageStrings.TODAY_AT, value: currentDateTime(), inline: true });
                     await logsChannel.send({ embeds: [embed] });
                 }
             }
@@ -223,6 +246,8 @@ class VoiceEvents {
             if (oldState.selfVideo !== newState.selfVideo && newState.channel) {
                 if (oldState.channel) {
                     const memberStatus = await this.getMemberStatus(member);
+                    const usersOnChannel = Array.from(newState.channel.members.values())
+                        .filter(user => user.id !== member.id);
                     const embed = new EmbedBuilder()
                         .setTitle(newState.selfVideo ? 
                             languageStrings.CAMERA_STARTED_TITLE : 
@@ -239,10 +264,31 @@ class VoiceEvents {
                                 name: languageStrings.VC_NAME, 
                                 value: `<#${newState.channel.id}>`, 
                                 inline: false 
-                            },
-                            { name: languageStrings.TODAY_AT, value: currentDateTime(), inline: true }
+                            }
                         );
 
+                    if (usersOnChannel.length > 0) {
+                        const usersList = await Promise.all(usersOnChannel
+                            .slice(0, 7)
+                            .map(async user => {
+                                const status = await this.getMemberStatus(user);
+                                return `${user.toString()} (${user.nickname || user.user.username}) ${status}`;
+                            }));
+
+                        let usersListStr = usersList.join(', ');
+
+                        if (usersOnChannel.length > 7) {
+                            usersListStr += `, and ${usersOnChannel.length - 7} more`;
+                        }
+
+                        embed.addFields({ 
+                            name: languageStrings.USERS_ON_CHANNEL, 
+                            value: usersListStr, 
+                            inline: false 
+                        });
+                    }
+
+                    embed.addFields({ name: languageStrings.TODAY_AT, value: currentDateTime(), inline: true });
                     await logsChannel.send({ embeds: [embed] });
                 }
             }
