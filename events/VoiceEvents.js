@@ -194,28 +194,57 @@ class VoiceEvents {
             }
 
             if (oldState.streaming !== newState.streaming && newState.channel) {
-                const memberStatus = await this.getMemberStatus(member);
-                const embed = new EmbedBuilder()
-                    .setTitle(newState.streaming ? 
-                        languageStrings.STREAM_STARTED_TITLE : 
-                        languageStrings.STREAM_ENDED_TITLE
-                    )
-                    .setColor(newState.streaming ? '#00FF00' : '#FF0000')
-                    .addFields(
-                        { 
-                            name: languageStrings.USER, 
-                            value: `${member.toString()} (${member.nickname || member.user.username}) ${memberStatus}`, 
-                            inline: false 
-                        },
-                        { 
-                            name: languageStrings.VC_NAME, 
-                            value: `<#${newState.channel.id}>`, 
-                            inline: false 
-                        },
-                        { name: languageStrings.TODAY_AT, value: currentDateTime(), inline: true }
-                    );
+                if (oldState.channel) {
+                    const memberStatus = await this.getMemberStatus(member);
+                    const embed = new EmbedBuilder()
+                        .setTitle(newState.streaming ? 
+                            languageStrings.STREAM_STARTED_TITLE : 
+                            languageStrings.STREAM_ENDED_TITLE
+                        )
+                        .setColor(newState.streaming ? '#00FF00' : '#FF0000')
+                        .addFields(
+                            { 
+                                name: languageStrings.USER, 
+                                value: `${member.toString()} (${member.nickname || member.user.username}) ${memberStatus}`, 
+                                inline: false 
+                            },
+                            { 
+                                name: languageStrings.VC_NAME, 
+                                value: `<#${newState.channel.id}>`, 
+                                inline: false 
+                            },
+                            { name: languageStrings.TODAY_AT, value: currentDateTime(), inline: true }
+                        );
 
-                await logsChannel.send({ embeds: [embed] });
+                    await logsChannel.send({ embeds: [embed] });
+                }
+            }
+
+            if (oldState.selfVideo !== newState.selfVideo && newState.channel) {
+                if (oldState.channel) {
+                    const memberStatus = await this.getMemberStatus(member);
+                    const embed = new EmbedBuilder()
+                        .setTitle(newState.selfVideo ? 
+                            languageStrings.CAMERA_STARTED_TITLE : 
+                            languageStrings.CAMERA_ENDED_TITLE
+                        )
+                        .setColor(newState.selfVideo ? '#00FF00' : '#FF0000')
+                        .addFields(
+                            { 
+                                name: languageStrings.USER, 
+                                value: `${member.toString()} (${member.nickname || member.user.username}) ${memberStatus}`, 
+                                inline: false 
+                            },
+                            { 
+                                name: languageStrings.VC_NAME, 
+                                value: `<#${newState.channel.id}>`, 
+                                inline: false 
+                            },
+                            { name: languageStrings.TODAY_AT, value: currentDateTime(), inline: true }
+                        );
+
+                    await logsChannel.send({ embeds: [embed] });
+                }
             }
 
             if (oldState.serverMute !== newState.serverMute || oldState.serverDeaf !== newState.serverDeaf) {

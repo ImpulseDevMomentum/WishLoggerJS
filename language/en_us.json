@@ -289,5 +289,7 @@
     "DELETED_STICKER": "Deleted Sticker",
     "STICKER_ERROR": "Could not download sticker",
     "ATTACHMENT_ERROR": "Could not download attachment",
-    "DELETED_ATTACHMENT": "Deleted Attachment"
+    "DELETED_ATTACHMENT": "Deleted Attachment",
+    "CAMERA_STARTED_TITLE": "<:UserStartedVideoStreaming:1311026107734167623> Camera Started",
+    "CAMERA_ENDED_TITLE": "<:UserEndedVideoStreaming:1311026105892995234> Camera Ended"
 }
