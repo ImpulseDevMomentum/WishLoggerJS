@@ -121,32 +121,32 @@ class EmojiEvents {
     }
 }
 
-module.exports = {
-    name: Events.GuildEmojiCreate,
-    once: false,
-    async execute(emoji) {
-        const guild = emoji.guild;
-        const emojiEvents = new EmojiEvents(emoji.client);
-        await emojiEvents.handleEmojiUpdate(guild, [], [emoji]);
+module.exports = [
+    {
+        name: Events.GuildEmojiCreate,
+        once: false,
+        async execute(emoji) {
+            const guild = emoji.guild;
+            const emojiEvents = new EmojiEvents(emoji.client);
+            await emojiEvents.handleEmojiUpdate(guild, [], [emoji]);
+        }
+    },
+    {
+        name: Events.GuildEmojiDelete,
+        once: false,
+        async execute(emoji) {
+            const guild = emoji.guild;
+            const emojiEvents = new EmojiEvents(emoji.client);
+            await emojiEvents.handleEmojiUpdate(guild, [emoji], []);
+        }
+    },
+    {
+        name: Events.GuildEmojiUpdate,
+        once: false,
+        async execute(oldEmoji, newEmoji) {
+            const guild = oldEmoji.guild;
+            const emojiEvents = new EmojiEvents(oldEmoji.client);
+            await emojiEvents.handleEmojiUpdate(guild, [oldEmoji], [newEmoji]);
+        }
     }
-};
-
-module.exports.emojiDelete = {
-    name: Events.GuildEmojiDelete,
-    once: false,
-    async execute(emoji) {
-        const guild = emoji.guild;
-        const emojiEvents = new EmojiEvents(emoji.client);
-        await emojiEvents.handleEmojiUpdate(guild, [emoji], []);
-    }
-};
-
-module.exports.emojiUpdate = {
-    name: Events.GuildEmojiUpdate,
-    once: false,
-    async execute(oldEmoji, newEmoji) {
-        const guild = oldEmoji.guild;
-        const emojiEvents = new EmojiEvents(oldEmoji.client);
-        await emojiEvents.handleEmojiUpdate(guild, [oldEmoji], [newEmoji]);
-    }
-};
+];
