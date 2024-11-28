@@ -188,30 +188,29 @@ class ThreadEvents {
     }
 }
 
-const createEvent = {
-    name: Events.ThreadCreate,
-    once: false,
-    async execute(thread) {
-        const threadEvents = new ThreadEvents(thread.client);
-        await threadEvents.handleThreadCreate(thread);
+module.exports = [
+    {
+        name: Events.ThreadCreate,
+        once: false,
+        async execute(thread) {
+            const threadEvents = new ThreadEvents(thread.client);
+            await threadEvents.handleThreadCreate(thread);
+        }
+    },
+    {
+        name: Events.ThreadDelete,
+        once: false,
+        async execute(thread) {
+            const threadEvents = new ThreadEvents(thread.client);
+            await threadEvents.handleThreadDelete(thread);
+        }
+    },
+    {
+        name: Events.ThreadUpdate,
+        once: false,
+        async execute(oldThread, newThread) {
+            const threadEvents = new ThreadEvents(oldThread.client);
+            await threadEvents.handleThreadUpdate(oldThread, newThread);
+        }
     }
-};
-
-const deleteEvent = {
-    name: Events.ThreadDelete,
-    once: false,
-    async execute(thread) {
-        const threadEvents = new ThreadEvents(thread.client);
-        await threadEvents.handleThreadDelete(thread);
-    }
-};
-
-const updateEvent = {
-    name: Events.ThreadUpdate,
-    once: false,
-    async execute(oldThread, newThread) {
-        const threadEvents = new ThreadEvents(oldThread.client);
-        await threadEvents.handleThreadUpdate(oldThread, newThread);
-    }
-};
-module.exports = { createEvent, deleteEvent, updateEvent };
+];
