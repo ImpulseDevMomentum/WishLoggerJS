@@ -302,49 +302,43 @@ class ChannelEvents {
 
             let permissionsChanged = false;
 
-            for (const [targetId, oldPerms] of oldChannel.permissionOverwrites.cache) {
-                const newPerms = newChannel.permissionOverwrites.cache.get(targetId);
+            for (const [targetId, newPerms] of newChannel.permissionOverwrites.cache) {
+                const oldPerms = oldChannel.permissionOverwrites.cache.get(targetId);
                 
-                const permissionsAreDifferent = !newPerms || 
+                const permissionsAreDifferent = !oldPerms || 
                     oldPerms.allow.bitfield !== newPerms.allow.bitfield || 
                     oldPerms.deny.bitfield !== newPerms.deny.bitfield;
 
                 if (permissionsAreDifferent) {
-                    const target = await oldChannel.guild.roles.fetch(targetId)
-                        .catch(() => oldChannel.guild.members.fetch(targetId).catch(() => null));
+                    let target;
+                    let targetName;
 
-                    if (!target) continue;
-
-                    const targetName = target.id === oldChannel.guild.id ? 
-                        languageStrings.EVERYONE : 
-                        (target.displayName || target.name);
+                    if (targetId === newChannel.guild.id) {
+                        target = newChannel.guild.roles.everyone;
+                        targetName = '@everyone';
+                    } else {
+                        target = await newChannel.guild.roles.fetch(targetId)
+                            .catch(() => newChannel.guild.members.fetch(targetId).catch(() => null));
+                        
+                        if (!target) continue;
+                        targetName = target.name || target.displayName || target.tag || targetId;
+                    }
 
                     permissionsEmbed.addFields(
                         { 
-                            name: target.constructor.name === 'Role' ? 
+                            name: `${target.constructor.name === 'Role' ? 
                                 languageStrings.ROLE_NAME : 
-                                languageStrings.MEMBER_NAME,
-                            value: targetName,
+                                languageStrings.MEMBER_NAME}: ${targetName}`,
+                            value: '\u200B',
                             inline: false 
-                        },
-                        { 
-                            name: languageStrings.CHANNEL_NAME, 
-                            value: `<#${newChannel.id}>`, 
-                            inline: false 
-                        },
-                        { 
-                            name: languageStrings.MODERATOR, 
-                            value: moderatorDisplay, 
-                            inline: false 
-                        },
-                        { name: languageStrings.MODERATOR_ID, value: moderator.id.toString(), inline: false }
+                        }
                     );
 
                     const permissionChanges = [];
-                    const oldAllowed = oldPerms.allow.toArray();
-                    const oldDenied = oldPerms.deny.toArray();
-                    const newAllowed = newPerms ? newPerms.allow.toArray() : [];
-                    const newDenied = newPerms ? newPerms.deny.toArray() : [];
+                    const oldAllowed = oldPerms ? oldPerms.allow.toArray() : [];
+                    const oldDenied = oldPerms ? oldPerms.deny.toArray() : [];
+                    const newAllowed = newPerms.allow.toArray();
+                    const newDenied = newPerms.deny.toArray();
 
                     const allPerms = [...new Set([...oldAllowed, ...oldDenied, ...newAllowed, ...newDenied])];
                     
