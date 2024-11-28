@@ -63,7 +63,7 @@ class MessageEdit {
                 { name: `${languageStrings.ORIGINAL_MESSAGE}`, value: originalMessage, inline: false },
                 { name: `${languageStrings.EDITED_MESSAGE}`, value: editedMessage, inline: false },
                 { name: `${languageStrings.JUMP_TO_MESSAGE}`, value: `[${languageStrings.CLICK_HERE}](${messageUrl})`, inline: false },
-                { name: `${languageStrings.CHANNEL}`, value: `<#${oldMessage.channel.id}>`, inline: true },
+                { name: `${languageStrings.CHANNEL}`, value: `<#${oldMessage.channel.id}>`, inline: false },
                 { name: `${languageStrings.TODAY_AT}`, value: currentDateTime(), inline: true }
             );
 
