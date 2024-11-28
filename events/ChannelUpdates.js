@@ -311,28 +311,23 @@ class ChannelEvents {
 
                 if (permissionsAreDifferent) {
                     let target;
-                    let targetName;
+                    let targetDisplay;
 
                     if (targetId === newChannel.guild.id) {
                         target = newChannel.guild.roles.everyone;
-                        targetName = '@everyone';
+                        targetDisplay = '@everyone';
                     } else {
                         target = await newChannel.guild.roles.fetch(targetId)
                             .catch(() => newChannel.guild.members.fetch(targetId).catch(() => null));
                         
                         if (!target) continue;
-                        targetName = target.name || target.displayName || target.tag || targetId;
-                    }
 
-                    permissionsEmbed.addFields(
-                        { 
-                            name: `${target.constructor.name === 'Role' ? 
-                                languageStrings.ROLE_NAME : 
-                                languageStrings.MEMBER_NAME}: ${targetName}`,
-                            value: '\u200B',
-                            inline: false 
+                        if (target.constructor.name === 'Role') {
+                            targetDisplay = `<@&${target.id}>`;
+                        } else {
+                            targetDisplay = `<@${target.id}>`;
                         }
-                    );
+                    }
 
                     const permissionChanges = [];
                     const oldAllowed = oldPerms ? oldPerms.allow.toArray() : [];
@@ -358,36 +353,33 @@ class ChannelEvents {
                                 .join(' ')
                                 .trim();
 
-                            let oldState, newState;
-                            if (wasAllowed) oldState = '<:On:1309252481967984710>';
-                            else if (wasDenied) oldState = '<:Off:1309252480475074625>';
-                            else oldState = '<:None:1310295239851905115>';
+                            let oldState = wasAllowed ? '<:On:1309252481967984710>' : 
+                                         wasDenied ? '<:Off:1309252480475074625>' : 
+                                         '<:None:1310295239851905115>';
 
-                            if (isAllowed) newState = '<:On:1309252481967984710>';
-                            else if (isDenied) newState = '<:Off:1309252480475074625>';
-                            else newState = '<:None:1310295239851905115>';
+                            let newState = isAllowed ? '<:On:1309252481967984710>' : 
+                                         isDenied ? '<:Off:1309252480475074625>' : 
+                                         '<:None:1310295239851905115>';
 
                             permissionChanges.push(`${oldState} -> ${newState} ${formattedPerm}`);
+                            permissionsChanged = true;
                         }
                     }
 
                     if (permissionChanges.length > 0) {
-                        permissionsEmbed.addFields({
-                            name: "\u200B",
-                            value: permissionChanges.join('\n'),
-                            inline: false
-                        });
-                        permissionsChanged = true;
+                        permissionsEmbed.addFields(
+                            { name: languageStrings.ROLE_NAME, value: targetDisplay, inline: false },
+                            { name: languageStrings.CHANNEL_NAME, value: `<#${newChannel.id}>`, inline: false },
+                            { name: languageStrings.MODERATOR, value: moderatorDisplay, inline: false },
+                            { name: languageStrings.MODERATOR_ID, value: moderator.id.toString(), inline: false },
+                            { name: '\u200b', value: permissionChanges.join('\n'), inline: false },
+                            { name: languageStrings.TODAY_AT, value: currentDateTime(), inline: false }
+                        );
                     }
                 }
             }
 
             if (permissionsChanged) {
-                permissionsEmbed.addFields({
-                    name: languageStrings.TODAY_AT,
-                    value: currentDateTime(),
-                    inline: true
-                });
                 await logChannel.send({ embeds: [permissionsEmbed] });
             }
 
