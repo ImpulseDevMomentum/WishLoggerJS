@@ -43,6 +43,13 @@ class MessageDelete {
         embed.addFields(
             { name: `${languageStrings.USER}`, value: `<@${message.author.id}> (${message.author.tag})`, inline: false }
         );
+        if (hasInvite) {
+            embed.addFields({ 
+                name: languageStrings.WARNING_LINK_IN_MESSAGE, 
+                value: languageStrings.MESSAGE_HAD_INVITE,
+                inline: false 
+            });
+        }
         if (truncatedContent) {
             embed.addFields({ 
                 name: `${languageStrings.CONTENT}`, 
