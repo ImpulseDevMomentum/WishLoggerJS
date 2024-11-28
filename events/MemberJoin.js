@@ -84,7 +84,7 @@ class MemberJoin {
                     .setTitle(languageStrings.USER_JOINED_TITLE)
                     .setColor('#00FF00')
                     .addFields(
-                        { name: languageStrings.USER, value: member.toString(), inline: false },
+                        { name: languageStrings.USER, value: `${member.toString()} (${member.user.tag})`, inline: false },
                         { name: languageStrings.USER_ID, value: member.id.toString(), inline: false }
                     );
 
@@ -93,19 +93,38 @@ class MemberJoin {
                     embed.addFields({ name: languageStrings.ACCOUNT_AGE, value: languageStrings.ACCOUNT_AGE_WARNING, inline: false });
                 }
 
-                const auditLogs = await member.guild.fetchAuditLogs();
-                const wasEverBanned = auditLogs.entries.some(entry => 
-                    entry.action === 'MEMBER_BAN_ADD' && entry.target?.id === member.id
+                const banLogs = await member.guild.fetchAuditLogs({
+                    limit: 100,
+                    type: 22
+                });
+
+                const kickLogs = await member.guild.fetchAuditLogs({
+                    limit: 100,
+                    type: 20
+                });
+
+                const banLog = banLogs.entries.find(entry => 
+                    entry.target?.id === member.id
                 );
-                if (wasEverBanned) {
-                    embed.addFields({ name: languageStrings.WAS_EVER_BANNED, value: languageStrings.USER_PREVIOUSLY_BANNED, inline: false });
+
+                const kickLog = kickLogs.entries.find(entry => 
+                    entry.target?.id === member.id
+                );
+
+                if (banLog) {
+                    embed.addFields({ 
+                        name: languageStrings.WAS_EVER_BANNED, 
+                        value: `${languageStrings.USER_PREVIOUSLY_BANNED}\n${languageStrings.BANNED_BY}: <@${banLog.executor.id}> (${banLog.executor.tag})`, 
+                        inline: false 
+                    });
                 }
 
-                const wasEverKicked = auditLogs.entries.some(entry => 
-                    entry.action === 'MEMBER_KICK' && entry.target?.id === member.id
-                );
-                if (wasEverKicked) {
-                    embed.addFields({ name: languageStrings.WAS_EVER_KICKED, value: languageStrings.USER_PREVIOUSLY_KICKED, inline: false });
+                if (kickLog) {
+                    embed.addFields({ 
+                        name: languageStrings.WAS_EVER_KICKED, 
+                        value: `${languageStrings.USER_PREVIOUSLY_KICKED}\n${languageStrings.KICKED_BY}: <@${kickLog.executor.id}> (${kickLog.executor.tag})`, 
+                        inline: false 
+                    });
                 }
 
                 const joinStatus = isFirstJoin ? languageStrings.USER_FIRST_JOIN : languageStrings.USER_REJOINED;
@@ -113,7 +132,11 @@ class MemberJoin {
 
                 if (usedInvite) {
                     embed.addFields(
-                        { name: languageStrings.INVITED_BY, value: usedInvite.inviter.toString(), inline: false },
+                        { 
+                            name: languageStrings.INVITED_BY, 
+                            value: `${usedInvite.inviter.toString()} (${usedInvite.inviter.tag})`, 
+                            inline: false 
+                        },
                         { name: languageStrings.INVITE_CODE, value: `https://discord.gg/${usedInvite.code}`, inline: false },
                         { name: languageStrings.INVITE_USES, value: usedInvite.uses.toString(), inline: false }
                     );
