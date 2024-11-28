@@ -46,7 +46,7 @@ class MessageDelete {
         if (hasInvite) {
             embed.addFields({ 
                 name: languageStrings.WARNING_LINK_IN_MESSAGE, 
-                value: languageStrings.MESSAGE_HAD_INVITE,
+                value: `\`\`\`diff\n- ${languageStrings.MESSAGE_HAD_INVITE}\n\`\`\``,
                 inline: false 
             });
         }
