@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, Events } = require('discord.js');
 const fs = require('fs');
 const { getServerLanguage, loadMemberLogsChannelId, currentDateTime } = require('../utils/imports');
 
@@ -122,11 +122,13 @@ class RoleEvents {
     }
 }
 
-module.exports = {
-    name: 'guildMemberUpdate',
-    once: false,
-    async execute(oldMember, newMember) {
-        const roleEvents = new RoleEvents(oldMember.client);
-        await roleEvents.handleRoleUpdate(oldMember, newMember);
+module.exports = [
+    {
+        name: Events.GuildMemberUpdate,
+        once: false,
+        async execute(oldMember, newMember) {
+            const roleEvents = new RoleEvents(oldMember.client);
+            await roleEvents.handleRoleUpdate(oldMember, newMember);
+        }
     }
-};
+];

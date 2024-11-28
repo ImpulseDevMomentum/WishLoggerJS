@@ -218,29 +218,29 @@ class RoleEvents {
     }
 }
 
-module.exports = {
-    name: Events.GuildRoleCreate,
-    once: false,
-    async execute(role) {
-        const roleEvents = new RoleEvents(role.client);
-        await roleEvents.handleRoleCreate(role);
+module.exports = [
+    {
+        name: Events.GuildRoleCreate,
+        once: false,
+        async execute(role) {
+            const roleEvents = new RoleEvents(role.client);
+            await roleEvents.handleRoleCreate(role);
+        }
+    },
+    {
+        name: Events.GuildRoleDelete,
+        once: false,
+        async execute(role) {
+            const roleEvents = new RoleEvents(role.client);
+            await roleEvents.handleRoleDelete(role);
+        }
+    },
+    {
+        name: Events.GuildRoleUpdate,
+        once: false,
+        async execute(oldRole, newRole) {
+            const roleEvents = new RoleEvents(oldRole.client);
+            await roleEvents.handleRoleUpdate(oldRole, newRole);
+        }
     }
-};
-
-module.exports.deleteEvent = {
-    name: Events.GuildRoleDelete,
-    once: false,
-    async execute(role) {
-        const roleEvents = new RoleEvents(role.client);
-        await roleEvents.handleRoleDelete(role);
-    }
-};
-
-module.exports.updateEvent = {
-    name: Events.GuildRoleUpdate,
-    once: false,
-    async execute(oldRole, newRole) {
-        const roleEvents = new RoleEvents(oldRole.client);
-        await roleEvents.handleRoleUpdate(oldRole, newRole);
-    }
-};
+];

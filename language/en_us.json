@@ -293,5 +293,6 @@
     "CAMERA_STARTED_TITLE": "<:UserStartedVideoStreaming:1311026107734167623> Camera Started",
     "CAMERA_ENDED_TITLE": "<:UserEndedVideoStreaming:1311026105892995234> Camera Ended",
     "KICKED_BY": "<:Moderator:1309220707493744801> Kicked by",
-    "BANNED_BY": "<:Moderator:1309220707493744801> Banned by"
+    "BANNED_BY": "<:Moderator:1309220707493744801> Banned by",
+    "POSITION": "Position"
 }

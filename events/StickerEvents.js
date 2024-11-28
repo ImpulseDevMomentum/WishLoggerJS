@@ -255,31 +255,29 @@ class StickerEvents {
     }
 }
 
-const createEvent = {
-    name: Events.GuildStickerCreate,
-    once: false,
-    execute: async sticker => {
-        const stickerEvents = new StickerEvents(sticker.client);
-        await stickerEvents.handleStickerUpdate(sticker.guild, [], [sticker]);
+module.exports = [
+    {
+        name: Events.GuildStickerCreate,
+        once: false,
+        async execute(sticker) {
+            const stickerEvents = new StickerEvents(sticker.client);
+            await stickerEvents.handleStickerUpdate(sticker.guild, [], [sticker]);
+        }
+    },
+    {
+        name: Events.GuildStickerDelete,
+        once: false,
+        async execute(sticker) {
+            const stickerEvents = new StickerEvents(sticker.client);
+            await stickerEvents.handleStickerUpdate(sticker.guild, [sticker], []);
+        }
+    },
+    {
+        name: Events.GuildStickerUpdate,
+        once: false,
+        async execute(oldSticker, newSticker) {
+            const stickerEvents = new StickerEvents(oldSticker.client);
+            await stickerEvents.handleStickerUpdate(oldSticker.guild, [oldSticker], [newSticker]);
+        }
     }
-};
-
-const deleteEvent = {
-    name: Events.GuildStickerDelete,
-    once: false,
-    execute: async sticker => {
-        const stickerEvents = new StickerEvents(sticker.client);
-        await stickerEvents.handleStickerUpdate(sticker.guild, [sticker], []);
-    }
-};
-
-const updateEvent = {
-    name: Events.GuildStickerUpdate,
-    once: false,
-    execute: async (oldSticker, newSticker) => {
-        const stickerEvents = new StickerEvents(oldSticker.client);
-        await stickerEvents.handleStickerUpdate(oldSticker.guild, [oldSticker], [newSticker]);
-    }
-};
-
-module.exports = { createEvent, deleteEvent, updateEvent };
+];

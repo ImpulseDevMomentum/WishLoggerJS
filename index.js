@@ -182,7 +182,6 @@ client.once('ready', async () => {
     await initializeCommands();
     await initializeEvents();
 
-
     console.log('\n=== DATABASE CHECK ===');
     const db = new sqlite3.Database('servers.db');
 
