@@ -19,7 +19,7 @@ function initializeDatabase() {
             message_logs_channel_name TEXT,
             reaction_logs_channel_id TEXT,
             reaction_logs_channel_name TEXT,
-            language TEXT DEFAULT 'en_eu'
+            language TEXT DEFAULT 'en_us'
         )`, (err) => {
             if (err) {
                 db.close();

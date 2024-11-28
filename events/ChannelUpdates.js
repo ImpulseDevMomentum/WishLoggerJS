@@ -403,29 +403,29 @@ class ChannelEvents {
     }
 }
 
-module.exports = {
-    name: Events.ChannelCreate,
-    once: false,
-    async execute(channel) {
-        const channelEvents = new ChannelEvents(channel.client);
-        await channelEvents.handleChannelCreate(channel);
+module.exports = [
+    {
+        name: Events.ChannelCreate,
+        once: false,
+        async execute(channel) {
+            const channelEvents = new ChannelEvents(channel.client);
+            await channelEvents.handleChannelCreate(channel);
+        }
+    },
+    {
+        name: Events.ChannelDelete,
+        once: false,
+        async execute(channel) {
+            const channelEvents = new ChannelEvents(channel.client);
+            await channelEvents.handleChannelDelete(channel);
+        }
+    },
+    {
+        name: Events.ChannelUpdate,
+        once: false,
+        async execute(oldChannel, newChannel) {
+            const channelEvents = new ChannelEvents(oldChannel.client);
+            await channelEvents.handleChannelUpdate(oldChannel, newChannel);
+        }
     }
-};
-
-module.exports.deleteEvent = {
-    name: Events.ChannelDelete,
-    once: false,
-    async execute(channel) {
-        const channelEvents = new ChannelEvents(channel.client);
-        await channelEvents.handleChannelDelete(channel);
-    }
-};
-
-module.exports.updateEvent = {
-    name: Events.ChannelUpdate,
-    once: false,
-    async execute(oldChannel, newChannel) {
-        const channelEvents = new ChannelEvents(oldChannel.client);
-        await channelEvents.handleChannelUpdate(oldChannel, newChannel);
-    }
-};
+];

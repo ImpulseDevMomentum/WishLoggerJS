@@ -101,8 +101,21 @@ async function initializeEvents() {
         const eventModule = require(filePath);
 
         try {
-            if (eventModule.name) {
-                console.log(`Registering event: ${eventModule.name} from ${file}`);
+            if (Array.isArray(eventModule)) {
+                console.log(`Loading multiple events from ${file}`);
+                eventModule.forEach(event => {
+                    if (event.name) {
+                        console.log(`Registering event: ${event.name} from ${file}`);
+                        if (event.once) {
+                            client.once(event.name, (...args) => event.execute(...args));
+                        } else {
+                            client.on(event.name, (...args) => event.execute(...args));
+                        }
+                        console.log(`✅ Successfully loaded event: ${event.name} from ${file}`);
+                    }
+                });
+            } else if (eventModule.name) {
+                console.log(`Registering single event: ${eventModule.name} from ${file}`);
                 if (eventModule.once) {
                     client.once(eventModule.name, (...args) => eventModule.execute(...args));
                 } else {
