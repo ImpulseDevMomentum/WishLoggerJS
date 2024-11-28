@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, Events } = require('discord.js');
 const fs = require('fs');
 const { getServerLanguage, loadServerLogsChannelId, currentDateTime } = require('../utils/imports');
 
@@ -198,21 +198,21 @@ class InviteEvents {
     }
 }
 
-const inviteCreate = {
-    name: 'inviteCreate',
-    once: false,
-    async execute(invite) {
-        const inviteEvents = new InviteEvents(invite.client);
-        await inviteEvents.handleInviteCreate(invite);
+module.exports = [
+    {
+        name: Events.InviteCreate,
+        once: false,
+        async execute(invite) {
+            const inviteEvents = new InviteEvents(invite.client);
+            await inviteEvents.handleInviteCreate(invite);
+        }
+    },
+    {
+        name: Events.InviteDelete,
+        once: false,
+        async execute(invite) {
+            const inviteEvents = new InviteEvents(invite.client);
+            await inviteEvents.handleInviteDelete(invite);
+        }
     }
-};
-
-const inviteDelete = {
-    name: 'inviteDelete',
-    once: false,
-    async execute(invite) {
-        const inviteEvents = new InviteEvents(invite.client);
-        await inviteEvents.handleInviteDelete(invite);
-    }
-};
-module.exports = { inviteCreate, inviteDelete };
+];

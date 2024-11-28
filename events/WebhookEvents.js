@@ -1,4 +1,4 @@
-const { EmbedBuilder, AuditLogEvent } = require('discord.js');
+const { EmbedBuilder, AuditLogEvent, Events } = require('discord.js');
 const fs = require('fs');
 const { getServerLanguage, loadServerLogsChannelId, currentDateTime } = require('../utils/imports');
 
@@ -203,14 +203,13 @@ class WebhookEvents {
     }
 }
 
-const webhooksUpdate = {
-    name: 'webhooksUpdate',
-    once: false,
-    async execute(channel) {
-        if (!channel) return;
-        const webhookEvents = new WebhookEvents(channel.client);
-        await webhookEvents.handleWebhooksUpdate(channel);
+module.exports = [
+    {
+        name: Events.WebhooksUpdate,
+        once: false,
+        async execute(channel) {
+            const webhookEvents = new WebhookEvents(channel.client);
+            await webhookEvents.handleWebhooksUpdate(channel);
+        }
     }
-};
-
-module.exports = webhooksUpdate;
+];
