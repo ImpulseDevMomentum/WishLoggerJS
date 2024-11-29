@@ -13,10 +13,6 @@ module.exports = {
                 .addChoices(
                     { name: 'English', value: 'en_us' },
                     { name: 'Polish', value: 'pl' },
-                    { name: 'Czech', value: 'cs' },
-                    { name: 'Russian', value: 'ru' },
-                    { name: 'Spanish', value: 'es' },
-                    { name: 'German', value: 'ger' }
                 )
                 .setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
