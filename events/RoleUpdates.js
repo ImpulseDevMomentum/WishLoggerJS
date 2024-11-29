@@ -166,7 +166,8 @@ class RoleEvents {
                         value: currentDateTime(),
                         inline: true
                     });
-                    await logChannel.send({ embeds: [embed, beforeEmbed, afterEmbed] });
+                    // beforeEmbed, afterEmbed
+                    await logChannel.send({ embeds: [embed] });
                     return;
                 }
             }
