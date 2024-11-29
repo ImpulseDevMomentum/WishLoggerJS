@@ -166,7 +166,8 @@ class RoleEvents {
                         value: currentDateTime(),
                         inline: true
                     });
-                    // beforeEmbed, afterEmbed
+                    // Jesli chcesz wlaczyc podklad kolorow na dole
+                    // dodaj embeds: [embed, beforeEmbed, afterEmbed] zamiast embeds: [embed]
                     await logChannel.send({ embeds: [embed] });
                     return;
                 }
