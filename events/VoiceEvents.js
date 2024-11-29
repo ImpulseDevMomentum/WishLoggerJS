@@ -294,7 +294,6 @@ class VoiceEvents {
             }
 
             if (oldState.serverMute !== newState.serverMute || oldState.serverDeaf !== newState.serverDeaf) {
-
                 const auditLogs = await guild.fetchAuditLogs({
                     type: AuditLogEvent.MemberUpdate,
                     limit: 1
@@ -303,8 +302,8 @@ class VoiceEvents {
                 const entry = auditLogs.entries.first();
                 if (!entry || entry.target.id !== member.id) return;
 
-
                 const moderator = entry.executor;
+                const moderatorMember = await guild.members.fetch(moderator.id).catch(() => null);
                 let action, color;
 
                 if (oldState.serverMute !== newState.serverMute) {
@@ -320,6 +319,8 @@ class VoiceEvents {
                     color = newState.serverDeaf ? '#FF0000' : '#00FF00';
                 }
                 const memberStatus = await this.getMemberStatus(member);
+                const moderatorStatus = moderatorMember ? await this.getMemberStatus(moderatorMember) : '';
+                
                 const embed = new EmbedBuilder()
                     .setTitle(action)
                     .setColor(color)
@@ -330,14 +331,19 @@ class VoiceEvents {
                             inline: false 
                         },
                         { name: languageStrings.USER_ID, value: member.id, inline: false },
-                        { name: languageStrings.MODERATOR, value: moderator.toString(), inline: false },
+                        { 
+                            name: languageStrings.MODERATOR, 
+                            value: moderatorMember ? 
+                                `${moderator.toString()} (${moderatorMember.nickname || moderator.username}) ${moderatorStatus}` : 
+                                moderator.toString(), 
+                            inline: false 
+                        },
                         { name: languageStrings.MODERATOR_ID, value: moderator.id, inline: false },
                         { 
                             name: languageStrings.CHANNEL, 
                             value: `<#${newState.channel?.id || 'Unknown'}>`, 
                             inline: false 
                         },
-
                         { name: languageStrings.TODAY_AT, value: currentDateTime(), inline: true }
                     );
 
