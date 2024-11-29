@@ -90,13 +90,12 @@ class MemberUpdates {
                 const embed = new EmbedBuilder()
 
                     .setTitle(languageStrings.EDITED_DISPLAY_NAME_TITLE)
-                    .setColor('#800080');
-
-                embed.addFields(
-                    { name: languageStrings.USER, value: oldMember.toString() },
-                    { name: languageStrings.OLD, value: oldMember.displayName, inline: false },
-                    { name: languageStrings.NEW, value: newMember.displayName, inline: false }
-                );
+                    .setColor('#800080')
+                    .addFields(
+                        { name: languageStrings.USER, value: `${oldMember.toString()} (${oldMember.user.username})`, inline: false },
+                        { name: languageStrings.OLD, value: oldMember.displayName, inline: false },
+                        { name: languageStrings.NEW, value: newMember.displayName, inline: false }
+                    );
 
                 const auditLogs = await oldMember.guild.fetchAuditLogs({
                     type: AuditLogEvent.MemberUpdate,
