@@ -7,10 +7,8 @@ const yaml = require('js-yaml');
 const humanize = require('humanize-duration');
 const { getClient } = require('./clientManager');
 
-// Zamiast bezpośredniego użycia client, użyj:
 const client = getClient();
 
-// Database helper functions
 function loadRoleLogsChannelId(serverId) {
     return new Promise((resolve, reject) => {
         const db = new sqlite3.Database('servers.db');
@@ -66,7 +64,6 @@ function loadReactionLogsChannelId(serverId) {
     });
 }
 
-// JSON helpers
 function loadJson(filename) {
     try {
         if (fs.existsSync(filename)) {
@@ -87,7 +84,6 @@ function saveJson(filename, data) {
     }
 }
 
-// Server language functions
 function updateServerLanguage(serverId, language) {
     return new Promise((resolve, reject) => {
         const db = new sqlite3.Database('servers.db');
@@ -110,7 +106,6 @@ function getServerLanguage(serverId) {
     });
 }
 
-// Time formatting functions
 function currentDateTime() {
     const now = new Date();
     const formatted = now.toLocaleString('en-US', {
@@ -146,5 +141,4 @@ module.exports = {
     getServerLanguage,
     currentDateTime,
     formatTimedelta
-    // Export other functions as needed
 }; 
