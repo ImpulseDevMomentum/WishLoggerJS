@@ -146,6 +146,29 @@ class RoleEvents {
                     inline: false
                 });
                 roleChangesDetected = true;
+
+                const oldColorHex = oldRole.color === 0 ? '000000' : oldRole.color.toString(16).padStart(6, '0');
+                const newColorHex = newRole.color === 0 ? '000000' : newRole.color.toString(16).padStart(6, '0');
+
+                const beforeEmbed = new EmbedBuilder()
+                    .setTitle(languageStrings.BEFORE_COLOR)
+                    .setColor(oldRole.color)
+                    .setImage(`https://singlecolorimage.com/get/${oldColorHex}/100x100`);
+
+                const afterEmbed = new EmbedBuilder()
+                    .setTitle(languageStrings.AFTER_COLOR)
+                    .setColor(newRole.color)
+                    .setImage(`https://singlecolorimage.com/get/${newColorHex}/100x100`);
+
+                if (roleChangesDetected) {
+                    embed.addFields({
+                        name: languageStrings.TODAY_AT,
+                        value: currentDateTime(),
+                        inline: true
+                    });
+                    await logChannel.send({ embeds: [embed, beforeEmbed, afterEmbed] });
+                    return;
+                }
             }
 
             if (oldRole.hoist !== newRole.hoist) {

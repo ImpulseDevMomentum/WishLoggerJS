@@ -310,5 +310,7 @@
     "ROLE_CURRENT": "Current",
     "ROLE_BELOW": "Below",
     "BOTTOM_POSITION": "Bottom",
-    "TOP_POSITION": "Top"
+    "TOP_POSITION": "Top",
+    "BEFORE_COLOR": "Before",
+    "AFTER_COLOR": "After"
 }
