@@ -299,5 +299,16 @@
     "FALSE": "Off",
     "TRUE": "On",
     "SERVER_INVITE_BACKGROUND_CHANGED": "Server Invite Background Changed",
-    "SERVER_BANNER_BACKGROUND_CHANGED": "Server Banner Background Changed"
+    "SERVER_BANNER_BACKGROUND_CHANGED": "Server Banner Background Changed",
+    "ROLE_ICON_CHANGE": "**Role Icon Changed**",
+    "ROLE_ICON_ADDED": "**Role Icon Added**",
+    "ROLE_ICON_CHANGED": "**Role Icon Changed**",
+    "ROLE_POSITION_CHANGE": "**Role Position Changed**",
+    "OLD_POSITION": "**Old Position**",
+    "NEW_POSITION": "**New Position**",
+    "ROLE_ABOVE": "Above",
+    "ROLE_CURRENT": "Current",
+    "ROLE_BELOW": "Below",
+    "BOTTOM_POSITION": "Bottom",
+    "TOP_POSITION": "Top"
 }

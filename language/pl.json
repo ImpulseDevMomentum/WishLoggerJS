@@ -299,5 +299,16 @@
     "FALSE": "Wyłączony",
     "TRUE": "Włączony",
     "SERVER_INVITE_BACKGROUND_CHANGED": "Zmieniono tło zaproszenia serwera",
-    "SERVER_BANNER_BACKGROUND_CHANGED": "Zmieniono tło baneru serwera"
+    "SERVER_BANNER_BACKGROUND_CHANGED": "Zmieniono tło baneru serwera",
+    "ROLE_ICON_CHANGE": "**Zmieniono ikonę roli**",
+    "ROLE_ICON_ADDED": "**Dodano ikonę roli**",
+    "ROLE_ICON_CHANGED": "**Zmieniono ikonę roli**",
+    "ROLE_POSITION_CHANGE": "**Zmieniono pozycję roli**",
+    "OLD_POSITION": "**Pozycja przed zmianą**",
+    "NEW_POSITION": "**Pozycja po zmianie**",
+    "ROLE_ABOVE": "Powyżej",
+    "ROLE_CURRENT": "Obecna",
+    "ROLE_BELOW": "Poniżej",
+    "BOTTOM_POSITION": "Dół",
+    "TOP_POSITION": "Góra"
 }

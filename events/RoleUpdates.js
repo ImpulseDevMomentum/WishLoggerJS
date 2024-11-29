@@ -204,6 +204,60 @@ class RoleEvents {
                 }
             }
 
+            if (oldRole.icon !== newRole.icon) {
+                embed.addFields({
+                    name: languageStrings.ROLE_ICON_CHANGE,
+                    value: oldRole.icon ? languageStrings.ROLE_ICON_CHANGED : languageStrings.ROLE_ICON_ADDED,
+                    inline: false
+                });
+                if (newRole.iconURL()) {
+                    embed.setThumbnail(newRole.iconURL());
+                }
+                roleChangesDetected = true;
+            }
+
+            if (oldRole.position !== newRole.position) {
+                if (newRole.id === newRole.guild.id) return;
+                
+                const oldPositionRoles = await this.getRolesAround(oldRole.guild, oldRole.position, languageStrings);
+                const newPositionRoles = await this.getRolesAround(newRole.guild, newRole.position, languageStrings);
+                
+                if (!oldPositionRoles || !newPositionRoles) return;
+                
+                let positionText = `${languageStrings.OLD_POSITION}:\n`;
+                if (oldPositionRoles.isTop) {
+                    positionText += `**${languageStrings.TOP_POSITION}**\n`;
+                } else {
+                    positionText += `${languageStrings.ROLE_ABOVE}: ${oldPositionRoles.above}\n`;
+                }
+                positionText += `${languageStrings.ROLE_CURRENT}: <@&${oldRole.id}>\n`;
+                if (oldPositionRoles.isBottom) {
+                    positionText += `**${languageStrings.BOTTOM_POSITION}**\n`;
+                } else {
+                    positionText += `${languageStrings.ROLE_BELOW}: ${oldPositionRoles.below}\n`;
+                }
+                
+                positionText += `\n${languageStrings.NEW_POSITION}:\n`;
+                if (newPositionRoles.isTop) {
+                    positionText += `**${languageStrings.TOP_POSITION}**\n`;
+                } else {
+                    positionText += `${languageStrings.ROLE_ABOVE}: ${newPositionRoles.above}\n`;
+                }
+                positionText += `${languageStrings.ROLE_CURRENT}: <@&${newRole.id}>\n`;
+                if (newPositionRoles.isBottom) {
+                    positionText += `**${languageStrings.BOTTOM_POSITION}**`;
+                } else {
+                    positionText += `${languageStrings.ROLE_BELOW}: ${newPositionRoles.below}`;
+                }
+                
+                embed.addFields({
+                    name: languageStrings.ROLE_POSITION_CHANGE,
+                    value: positionText,
+                    inline: false
+                });
+                roleChangesDetected = true;
+            }
+
             if (roleChangesDetected) {
                 embed.addFields({
                     name: languageStrings.TODAY_AT,
@@ -215,6 +269,25 @@ class RoleEvents {
         } catch (error) {
             console.error('Error in handleRoleUpdate:', error);
         }
+    }
+
+    async getRolesAround(guild, position, languageStrings) {
+        const roles = [...guild.roles.cache.values()]
+            .filter(r => r.id !== guild.id)
+            .sort((a, b) => b.position - a.position);
+        
+        const targetIndex = roles.findIndex(r => r.position === position);
+        if (targetIndex === -1) return null;
+        
+        const isTop = targetIndex === 0;
+        const isBottom = targetIndex === roles.length - 1;
+        
+        return {
+            above: isTop ? languageStrings.TOP_POSITION : roles[targetIndex - 1] ? `<@&${roles[targetIndex - 1].id}>` : languageStrings.NONE,
+            below: isBottom ? languageStrings.BOTTOM_POSITION : roles[targetIndex + 1] ? `<@&${roles[targetIndex + 1].id}>` : languageStrings.NONE,
+            isTop,
+            isBottom
+        };
     }
 }
 
