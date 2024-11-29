@@ -294,5 +294,10 @@
     "CAMERA_ENDED_TITLE": "<:UserEndedVideoStreaming:1311026105892995234> Zakończono transmisję wideo",
     "KICKED_BY": "<:Moderator:1309220707493744801> Wyrzucony przez",
     "BANNED_BY": "<:Moderator:1309220707493744801> Zbanowany przez",
-    "POSITION": "Pozycja"
+    "POSITION": "Pozycja",
+    "SERVER_PROGRESS_BAR_CHANGED": "Zmieniono pasek premium na",
+    "FALSE": "Wyłączony",
+    "TRUE": "Włączony",
+    "SERVER_INVITE_BACKGROUND_CHANGED": "Zmieniono tło zaproszenia serwera",
+    "SERVER_BANNER_BACKGROUND_CHANGED": "Zmieniono tło baneru serwera"
 }

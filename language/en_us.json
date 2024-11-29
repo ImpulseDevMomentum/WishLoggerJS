@@ -294,5 +294,10 @@
     "CAMERA_ENDED_TITLE": "<:UserEndedVideoStreaming:1311026105892995234> Camera Ended",
     "KICKED_BY": "<:Moderator:1309220707493744801> Kicked by",
     "BANNED_BY": "<:Moderator:1309220707493744801> Banned by",
-    "POSITION": "Position"
+    "POSITION": "Position",
+    "SERVER_PROGRESS_BAR_CHANGED": "Server Progress Bar Set To",
+    "FALSE": "Off",
+    "TRUE": "On",
+    "SERVER_INVITE_BACKGROUND_CHANGED": "Server Invite Background Changed",
+    "SERVER_BANNER_BACKGROUND_CHANGED": "Server Banner Background Changed"
 }

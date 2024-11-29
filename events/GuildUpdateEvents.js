@@ -62,7 +62,9 @@ class GuildUpdateEvents {
             }
 
             if (oldGuild.explicitContentFilter !== newGuild.explicitContentFilter) {
-                changes.push(`${languageStrings.SERVER_EXPLICIT_CONTENT_FILTER_CHANGED}: \`${oldGuild.explicitContentFilter}\` ${languageStrings.TO_SV_UPDATE} \`${newGuild.explicitContentFilter}\``);
+                const oldValue = oldGuild.explicitContentFilter === 0 ? `${languageStrings.FALSE}` : `${languageStrings.TRUE}`;
+                const newValue = newGuild.explicitContentFilter === 0 ? `${languageStrings.FALSE}` : `${languageStrings.TRUE}`;
+                changes.push(`${languageStrings.SERVER_EXPLICIT_CONTENT_FILTER_CHANGED}: \`${oldValue}\` ${languageStrings.TO_SV_UPDATE} \`${newValue}\``);
             }
 
             if (oldGuild.afkChannel?.id !== newGuild.afkChannel?.id) {
@@ -72,7 +74,9 @@ class GuildUpdateEvents {
             }
 
             if (oldGuild.defaultMessageNotifications !== newGuild.defaultMessageNotifications) {
-                changes.push(`${languageStrings.SERVER_NOTIFICATION_SETTINGS_CHANGED}: \`${oldGuild.defaultMessageNotifications}\` ${languageStrings.TO_SV_UPDATE} \`${newGuild.defaultMessageNotifications}\``);
+                const oldValue = oldGuild.defaultMessageNotifications === 0 ? `${languageStrings.FALSE}` : `${languageStrings.TRUE}`;
+                const newValue = newGuild.defaultMessageNotifications === 0 ? `${languageStrings.FALSE}` : `${languageStrings.TRUE}`;
+                changes.push(`${languageStrings.SERVER_NOTIFICATION_SETTINGS_CHANGED}: \`${oldValue}\` ${languageStrings.TO_SV_UPDATE} \`${newValue}\``);
             }
 
             if (oldGuild.afkTimeout !== newGuild.afkTimeout) {
@@ -95,6 +99,19 @@ class GuildUpdateEvents {
 
             if (oldGuild.premiumSubscriptionCount !== newGuild.premiumSubscriptionCount) {
                 changes.push(`${languageStrings.SERVER_PREMIUM_ROLE_CHANGED}: \`${oldGuild.premiumSubscriptionCount}\` ${languageStrings.TO_SV_UPDATE} \`${newGuild.premiumSubscriptionCount}\``);
+            }
+
+            if (oldGuild.premiumProgressBarEnabled !== newGuild.premiumProgressBarEnabled) {
+                const statusText = newGuild.premiumProgressBarEnabled ? `${languageStrings.TRUE}` : `${languageStrings.FALSE}`;
+                changes.push(`${languageStrings.SERVER_PROGRESS_BAR_CHANGED}: \`${statusText}\``);
+            }
+
+            if (oldGuild.inviteSplash !== newGuild.inviteSplash) {
+                changes.push(languageStrings.SERVER_INVITE_BACKGROUND_CHANGED);
+            }
+
+            if (oldGuild.splash !== newGuild.splash) {
+                changes.push(languageStrings.SERVER_BANNER_BACKGROUND_CHANGED);
             }
 
             if (changes.length > 0) {
@@ -132,6 +149,12 @@ class GuildUpdateEvents {
                     }
                     if (newGuild.banner) {
                         embed.setImage(newGuild.bannerURL());
+                    }
+                    if (newGuild.splash) {
+                        embed.setImage(newGuild.splashURL());
+                    }
+                    if (newGuild.inviteSplash) {
+                        embed.setImage(newGuild.inviteSplashURL());
                     }
 
                     embed.addFields({ 
