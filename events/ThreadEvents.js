@@ -45,7 +45,7 @@ class ThreadEvents {
                 .setColor('#FF0000')
                 .addFields(
                     { name: languageStrings.THREAD_NAME, value: thread.name, inline: false },
-                    { name: languageStrings.MODERATOR, value: moderator.toString(), inline: false },
+                    { name: languageStrings.MODERATOR, value: `<@${moderator.id}> (${moderator.username})`, inline: false },
                     { name: languageStrings.MODERATOR_ID, value: moderator.id.toString(), inline: false },
                     { name: languageStrings.TODAY_AT, value: currentDateTime(), inline: true }
                 );
@@ -86,7 +86,7 @@ class ThreadEvents {
                 .setColor('#00FF00')
                 .addFields(
                     { name: languageStrings.THREAD_NAME, value: `<#${thread.id}>`, inline: false },
-                    { name: languageStrings.MODERATOR, value: moderator.toString(), inline: false },
+                    { name: languageStrings.MODERATOR, value: `<@${moderator.id}> (${moderator.username})`, inline: false },
                     { name: languageStrings.MODERATOR_ID, value: moderator.id.toString(), inline: false },
                     { name: languageStrings.TODAY_AT, value: currentDateTime(), inline: true }
                 );
@@ -126,7 +126,7 @@ class ThreadEvents {
                 .setColor('#0000FF')
                 .addFields(
                     { name: languageStrings.THREAD_NAME, value: `<#${newThread.id}>`, inline: false },
-                    { name: languageStrings.MODERATOR, value: moderator.toString(), inline: false },
+                    { name: languageStrings.MODERATOR, value: `<@${moderator.id}> (${moderator.username})`, inline: false },
                     { name: languageStrings.MODERATOR_ID, value: moderator.id.toString(), inline: false }
                 );
 
