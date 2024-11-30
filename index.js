@@ -278,7 +278,7 @@ client.on('interactionCreate', async interaction => {
             }
 
         } catch (e) {
-            console.error('Error while handling command error:', e);
+            console.error('Error while handling command error! -> ', e);
         }
     }
 });
