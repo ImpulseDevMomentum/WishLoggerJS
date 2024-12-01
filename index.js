@@ -61,7 +61,7 @@ async function deployCommands() {
         console.log('\n');
 
     } catch (error) {
-        console.error('❌ Error during command deployment:', error);
+        console.error('❌ Error during command deployment! -> ', error);
     }
 }
 async function initializeCommands() {
