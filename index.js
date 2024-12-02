@@ -86,7 +86,7 @@ async function initializeCommands() {
     }
 
     console.log(`Successfully loaded: ${client.commands.size}`);
-    console.log(`Failed to load: ${commandFiles.length - client.commands.size}`);
+    console.log(`Failed to load -> ${commandFiles.length - client.commands.size}`);
     console.log('\n');
 }
 
