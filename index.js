@@ -284,7 +284,7 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('error', error => {
-    console.error('Discord client error:', error);
+    console.error('Discord client error! -> ', error);
 });
 
 
