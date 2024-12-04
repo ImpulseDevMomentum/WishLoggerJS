@@ -6,8 +6,6 @@ const clientManager = require('./utils/clientManager');
 const sqlite3 = require('sqlite3');
 const ServerEvents = require('./events/ServerEvents');
 
-
-
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -86,7 +84,7 @@ async function initializeCommands() {
     }
 
     console.log(`Successfully loaded: ${client.commands.size}`);
-    console.log(`Failed to load -> ${commandFiles.length - client.commands.size}`);
+    console.log(`Failed to load! -> ${commandFiles.length - client.commands.size}`);
     console.log('\n');
 }
 
@@ -124,7 +122,7 @@ async function initializeEvents() {
                 console.log(`✅ Successfully loaded event: ${eventModule.name} from ${file}`);
             }
         } catch (error) {
-            console.log(`❌ Failed to load event ${file}: ${error.message}`);
+            console.log(`❌ Failed to load event! -> ${file}: ${error.message}`);
         }
     }
     console.log('\n');
@@ -174,7 +172,7 @@ client.once('ready', async () => {
 
         fs.writeFileSync(disallowedPath, JSON.stringify(disallowedData, null, 2));
     } catch (error) {
-        console.error('Error during servers list check:', error);
+        console.error('Error during servers list check! ->', error);
     }
     console.log('Servers list check complete.\n');
 
@@ -219,7 +217,7 @@ client.once('ready', async () => {
                             if (err) {
                                 console.error(`Failed to add server ${guild.name} (${guild.id}): ${err}`);
                             } else {
-                                console.log(`Added missing server to database: ${guild.name}`);
+                                console.log(`Added missing server to database! -> ${guild.name}`);
                             }
                             resolve();
                         });
@@ -231,7 +229,7 @@ client.once('ready', async () => {
         }));
 
     } catch (error) {
-        console.error('Error during database check:', error);
+        console.error('Error during database check! -> ', error);
     } finally {
         db.close();
         console.log('Database check complete.\n');
@@ -291,12 +289,12 @@ client.on('error', error => {
 
 process.on('unhandledRejection', error => {
     if (error.code === 10062) return;
-    console.error('Unhandled promise rejection:', error);
+    console.error('Unhandled promise rejection! -> ', error);
 });
 
 client.on('debug', console.log);
 client.on('guildMemberRemove', (member) => {
-    console.log('RAW guildMemberRemove event triggered for:', member.user.tag);
+    console.log('RAW guildMemberRemove event triggered for! -> ', member.user.tag);
 });
 
 client.login(process.env.TOKEN);
