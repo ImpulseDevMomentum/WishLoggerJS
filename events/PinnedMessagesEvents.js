@@ -27,55 +27,26 @@ class PinnedMessagesEvents {
     }
 
     async findAuditLogExecutor(guild, messageId, auditLogs, languageStrings) {
-        // console.log('Finding executor for message:', messageId);
-        // console.log('Audit logs exist:', !!auditLogs);
         
         if (!auditLogs) {
-            // console.log('No audit logs found');
             return languageStrings.UNKNOWN;
         }
 
-        // console.log('Audit log entries:', auditLogs.entries.map(entry => ({
-        //     targetId: entry.target?.id,
-        //     executorId: entry.executor?.id,
-        //     actionType: entry.action,
-        //     createdTimestamp: entry.createdTimestamp,
-        //     extra: entry.extra
-        // })));
-
         const auditEntry = auditLogs.entries.find(entry => {
-            // console.log('Checking entry:', {
-            //     targetId: entry.target?.id,
-            //     messageId: messageId,
-            //     extraMessageId: entry.extra?.messageId,
-            //     matches: entry.extra?.messageId === messageId
-            // });
             return entry.extra?.messageId === messageId;
         });
 
-        // console.log('Found audit entry:', !!auditEntry);
-
         if (!auditEntry?.executor) {
-            // console.log('No executor found in audit entry');
             return languageStrings.UNKNOWN;
         }
 
         const executor = auditEntry.executor;
-            // console.log('Executor found:', {
-            //     id: executor.id,
-            //     tag: executor.tag
-        // });
 
         try {
             const member = await guild.members.fetch(executor.id);
-            // console.log('Member found:', {
-            //     id: member.id,
-            //     nickname: member.nickname,
-            //     username: member.user.username
-            // });
+
             return `${executor.toString()} (${member.nickname || executor.username})`;
         } catch (error) {
-            // console.log('Error fetching member:', error);
             return executor.toString();
         }
     }
@@ -115,7 +86,6 @@ class PinnedMessagesEvents {
             const newPins = new Set([...currentPinnedIds].filter(x => !previousPinnedIds.has(x)));
             const removedPins = new Set([...previousPinnedIds].filter(x => !currentPinnedIds.has(x)));
 
-            // console.log('Fetching audit logs for guild:', guild.id);
             const [pinAuditLogs, unpinAuditLogs] = await Promise.all([
                 guild.fetchAuditLogs({ 
                     type: AuditLogEvent.MessagePin, 
@@ -128,23 +98,15 @@ class PinnedMessagesEvents {
                     type: AuditLogEvent.MessageUnpin, 
                     limit: 5 
                 }).catch(error => {
-                    // console.error('Error fetching unpin audit logs:', error);
                     return null;
                 })
             ]);
 
-            // console.log('Pin audit logs found:', !!pinAuditLogs);
-            // console.log('Unpin audit logs found:', !!unpinAuditLogs);
-
-            // Handle new pins
             for (const messageId of newPins) {
                 try {
-                    // console.log('Processing new pin for message:', messageId);
                     const message = await channel.messages.fetch(messageId);
-                    // console.log('Message found:', !!message);
                     
                     const pinnedBy = await this.findAuditLogExecutor(guild, messageId, pinAuditLogs, languageStrings);
-                    // console.log('Pin executor found:', pinnedBy);
 
                     const embed = new EmbedBuilder()
                         .setTitle(languageStrings.MESSAGE_PINNED_TITLE)
@@ -200,15 +162,11 @@ class PinnedMessagesEvents {
                 }
             }
 
-            // Handle removed pins
             for (const messageId of removedPins) {
-                try {
-                    // console.log('Processing unpin for message:', messageId);    
+                try {  
                     const message = await channel.messages.fetch(messageId);
-                    // console.log('Message found:', !!message);
                     
                     const unpinnedBy = await this.findAuditLogExecutor(guild, messageId, unpinAuditLogs, languageStrings);
-                    // console.log('Unpin executor found:', unpinnedBy);
 
                     const embed = new EmbedBuilder()
                         .setTitle(languageStrings.MESSAGE_UNPINNED_TITLE)

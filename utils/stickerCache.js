@@ -26,7 +26,6 @@ function saveCache(cache) {
 }
 
 function updateStickerEmoji(serverId, stickerId, emoji) {
-    // console.log('Updating emoji:', emoji); 
     const cache = loadCache();
     if (!cache[serverId]) {
         cache[serverId] = {};
@@ -45,19 +44,15 @@ function getStickerEmoji(serverId, stickerId) {
 }
 
 function removeSticker(serverId, stickerId) {
-    // console.log(`Attempting to remove sticker from cache - Server: ${serverId}, Sticker: ${stickerId}`);
     const cache = loadCache();
     if (cache[serverId] && cache[serverId][stickerId]) {
-        // console.log('Found sticker in cache, removing...');
         delete cache[serverId][stickerId];
         
         if (Object.keys(cache[serverId]).length === 0) {
-            // console.log('Server has no more stickers, removing server entry...');
             delete cache[serverId];
         }
         
         saveCache(cache);
-        // console.log('Cache updated successfully');
     } else {
         console.log('Sticker not found in cache');
     }

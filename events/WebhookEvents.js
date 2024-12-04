@@ -44,22 +44,12 @@ class WebhookEvents {
             currentWebhooks.forEach(webhook => {
                 const avatarUrl = webhook.avatar 
                     ? webhook.avatarURL() 
-                    : 'https://cdn.discordapp.com/embed/avatars/0.png'; // Domyślny avatar
+                    : 'https://cdn.discordapp.com/embed/avatars/0.png';
 
                 currentWebhooksState[webhook.id] = {
                     name: webhook.name,
                     avatar: avatarUrl
                 };
-
-                // Debugowanie w konsoli
-                console.log('Webhook details:', {
-                    id: webhook.id,
-                    name: webhook.name,
-                    avatar: webhook.avatar,
-                    avatarURL: webhook.avatarURL(),
-                    defaultAvatar: avatarUrl,
-                    owner: webhook.owner ? webhook.owner.tag : 'Unknown'
-                });
             });
 
             const state = loadWebhooksState();

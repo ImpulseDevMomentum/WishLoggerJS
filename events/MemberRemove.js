@@ -13,10 +13,8 @@ class MemberRemove {
         try {
             console.log('MemberRemove event triggered for:', member.user.tag);
 
-            // Dodajemy opóźnienie
             await new Promise(resolve => setTimeout(resolve, 2000));
 
-            // Sprawdzamy audit logi
             const auditLogs = await member.guild.fetchAuditLogs({
                 limit: 1,
                 type: AuditLogEvent.MemberKick
@@ -31,20 +29,19 @@ class MemberRemove {
                 found: !!kickLog,
                 targetMatches: kickLog?.target?.id === member.id,
                 timeDiff: kickTimeDiff,
-                timeThresholdMet: kickTimeDiff < 180, // Zwiększamy próg do 3 minut
+                timeThresholdMet: kickTimeDiff < 180,
                 executor: kickLog?.executor?.tag
             });
             
             if (kickLog && 
                 kickLog.target?.id === member.id && 
                 kickTimeDiff !== null && 
-                kickTimeDiff < 180) { // Zwiększamy próg do 3 minut
+                kickTimeDiff < 180) {
                 console.log(`User was kicked by ${kickLog.executor?.tag}, time diff: ${kickTimeDiff}s`);
                 await this.memberKicked.handleKick(member, kickLog.executor);
                 return;
             }
 
-            // Sprawdzamy ban (tylko jeśli nie było kicka)
             const banLogs = await member.guild.fetchAuditLogs({
                 limit: 1,
                 type: AuditLogEvent.MemberBanAdd
@@ -56,12 +53,11 @@ class MemberRemove {
             if (banLog && 
                 banLog.target?.id === member.id && 
                 banTimeDiff !== null && 
-                banTimeDiff < 180) { // Również zwiększamy próg dla bana
+                banTimeDiff < 180) {
                 console.log(`User was banned - skipping member remove handler (time diff: ${banTimeDiff}s)`);
                 return;
             }
 
-            // Jeśli nie był to kick ani ban, to znaczy że user wyszedł sam
             console.log('User left voluntarily (no recent kick or ban found)');
             await this.memberLeft.handleLeave(member);
 

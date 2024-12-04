@@ -28,7 +28,6 @@ class MemberLeft {
                     { name: languageStrings.USER_ID, value: member.id.toString(), inline: false }
                 );
 
-            // Add roles information
             const roles = member.roles.cache
                 .filter(role => role.id !== member.guild.id)
                 .map(role => role.toString());
@@ -39,7 +38,6 @@ class MemberLeft {
                 inline: false 
             });
 
-            // Highest role
             const highestRole = member.roles.highest.id !== member.guild.id ? 
                 member.roles.highest.toString() : 
                 languageStrings.NONE;
@@ -48,7 +46,6 @@ class MemberLeft {
                 { name: languageStrings.HIGHEST_ROLE, value: highestRole, inline: false }
             );
 
-            // Join date and time spent
             if (member.joinedAt) {
                 const joinDate = member.joinedAt.toLocaleString('en-US', { 
                     month: '2-digit', 
@@ -71,7 +68,6 @@ class MemberLeft {
                 );
             }
 
-            // Add leave information
             embed.addFields({ 
                 name: languageStrings.ACTION, 
                 value: languageStrings.USER_LEFT_ACTION, 

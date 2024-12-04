@@ -9,34 +9,25 @@ class MessageEdit {
 
     async handleMessageEdit(oldMessage, newMessage) {
         try {
-            // console.log('MessageEdit: Starting handleMessageEdit');
             
             if (!oldMessage.guild || oldMessage.author.bot) {
-                // console.log('MessageEdit: Message is either not from guild or from bot');
                 return;
             }
             
-            // console.log('MessageEdit: Getting server language');
             const serverLanguage = await getServerLanguage(oldMessage.guild.id);
-            // console.log('MessageEdit: Server language:', serverLanguage);
             
-            // console.log('MessageEdit: Loading language file');
             const languageStrings = JSON.parse(
                 fs.readFileSync(`language/${serverLanguage}.json`, 'utf8')
             );
             
-            // console.log('MessageEdit: Getting log channel ID');
             const channelLogId = await loadMessageLogsChannelId(oldMessage.guild.id);
-            // console.log('MessageEdit: Log channel ID:', channelLogId);
             
             if (!channelLogId) {
-                // console.log('MessageEdit: No log channel ID found');
                 return;
             }
 
             const logChannel = oldMessage.guild.channels.cache.get(channelLogId);
             if (!logChannel) {
-                // console.log('MessageEdit: Could not find log channel');
                 return;
             }
 

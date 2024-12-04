@@ -31,7 +31,6 @@ class RawReactionRemoval {
                 fs.readFileSync(`language/${serverLanguage}.json`, 'utf8')
             );
 
-            // Fetch audit logs with correct type and timing
             const auditLogs = await guild.fetchAuditLogs({
                 type: AuditLogEvent.MessageReactionRemoveEmoji,
                 limit: 5
@@ -40,7 +39,6 @@ class RawReactionRemoval {
             let moderator = languageStrings.UNKNOWN;
             let moderatorId = languageStrings.UNKNOWN;
 
-            // Find the most recent relevant audit log entry
             const auditEntry = auditLogs.entries.find(entry => 
                 entry.target?.id === message.id && 
                 Date.now() - entry.createdTimestamp < 5000

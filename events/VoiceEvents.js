@@ -117,7 +117,6 @@ class VoiceEvents {
 
             else if (oldState.channel && !newState.channel) {
                 const joinTime = this.userVoiceTimes.get(member.id);
-                // console.log(`User ${member.id} join time was:`, joinTime);
                 this.userVoiceTimes.delete(member.id);
                 this.saveVoiceTimes();
                 let timeSpentStr = languageStrings.UNKNOWN;
@@ -125,9 +124,7 @@ class VoiceEvents {
             
                 if (joinTime) {
                     const now = new Date();
-                    // console.log('Current time:', now);
                     const timeSpent = Math.floor((now - joinTime) / 1000);
-                    // console.log('Time spent in seconds:', timeSpent);
                     const hours = Math.floor(timeSpent / 3600);
                     const minutes = Math.floor((timeSpent % 3600) / 60);
                     const seconds = timeSpent % 60;
@@ -138,7 +135,6 @@ class VoiceEvents {
                     } else {
                         timeSpentStr = '0s';
                     }
-                    // console.log('Formatted time:', timeSpentStr);
                 }
 
                 const memberStatus = await this.getMemberStatus(member);
@@ -164,7 +160,6 @@ class VoiceEvents {
             }
             else if (oldState.channel && newState.channel && oldState.channel.id !== newState.channel.id) {
                 const joinTime = new Date();
-                // console.log(`User ${member.id} moved channels, new join time:`, joinTime); // Debug log
                 this.userVoiceTimes.set(member.id, joinTime);
                 this.saveVoiceTimes();
                 const memberStatus = await this.getMemberStatus(member);

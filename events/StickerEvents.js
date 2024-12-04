@@ -24,11 +24,9 @@ class StickerEvents {
                     type: AuditLogEvent.StickerCreate,
                     limit: 1
                 }).catch(error => {
-                    // console.error('Error fetching audit logs:', error);
                     return null;
                 });
 
-                // console.log('Fetched audit logs:', auditLogs);
                 
                 if (!auditLogs) {
                     console.log('No audit logs found');
@@ -58,9 +56,7 @@ class StickerEvents {
                         const member = await guild.members.fetch(user.id);
                         const nickname = member ? member.nickname || user.username : user.username;
                         userDisplay = `<@${user.id}> (${nickname})`;
-                        // console.log('User info:', userDisplay);
                     } catch (error) {
-                        // console.error('Error fetching member:', error);
                         userDisplay = `<@${user.id}> (${user.username})`;
                     }
                 }
@@ -74,10 +70,6 @@ class StickerEvents {
                     )
                     .setImage(sticker.url);
 
-                // console.log('Sticker full object:', sticker);
-                // console.log('Sticker tags:', sticker.tags);
-                // console.log('Sticker format:', sticker.format);
-                // console.log('Sticker type:', sticker.type);
 
                 let relatedEmoji = null;
 
@@ -89,7 +81,6 @@ class StickerEvents {
                     relatedEmoji = sticker.tags;
                 }
 
-                // console.log('Related emoji found:', relatedEmoji);
 
                 if (relatedEmoji) {
                     embed.addFields({
@@ -122,29 +113,23 @@ class StickerEvents {
                     type: AuditLogEvent.StickerDelete,
                     limit: 1
                 }).catch(error => {
-                    // console.error('Error fetching audit logs:', error);
                     return null;
                 });
 
-                // console.log('Delete audit logs:', auditLogs);
 
                 let userDisplay = 'Unknown';
                 let user = null;
 
                 if (auditLogs) {
                     const auditEntry = auditLogs.entries.first();
-                    // console.log('Delete audit entry:', auditEntry);
 
                     if (auditEntry && auditEntry.executor) {
-                        // console.log('Found delete executor:', auditEntry.executor);
                         user = auditEntry.executor;
                         try {
                             const member = await guild.members.fetch(user.id);
                             const nickname = member ? member.nickname || user.username : user.username;
                             userDisplay = `<@${user.id}> (${nickname})`;
-                            // console.log('Delete user info:', userDisplay);
                         } catch (error) {
-                            // console.error('Error fetching member:', error);
                             userDisplay = `<@${user.id}> (${user.username})`;
                         }
                     }
@@ -175,7 +160,6 @@ class StickerEvents {
                 });
 
                 await logsChannel.send({ embeds: [embed] });
-                // console.log(`Removing sticker ${sticker.id} from cache for server ${guild.id}`);
                 removeSticker(guild.id, sticker.id);
             }
 

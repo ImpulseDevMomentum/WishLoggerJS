@@ -31,7 +31,6 @@ class ServerEvents {
         const db = new sqlite3.Database('servers.db');
         
         try {
-            // First check if server already exists
             const exists = await new Promise((resolve, reject) => {
                 db.get('SELECT server_id FROM servers WHERE server_id = ?', [guild.id], (err, row) => {
                     if (err) reject(err);
@@ -69,7 +68,6 @@ class ServerEvents {
             db.close();
         }
 
-        // Update presence after database operations
         this.client.user.setPresence({
             activities: [{ 
                 name: `/help | ${this.client.guilds.cache.size} servers`,
@@ -104,7 +102,6 @@ class ServerEvents {
             db.close();
         }
 
-        // Update presence after database operations
         this.client.user.setPresence({
             activities: [{ 
                 name: `/help | ${this.client.guilds.cache.size} servers`,
