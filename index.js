@@ -61,7 +61,7 @@ async function deployCommands() {
         console.log('\n');
 
     } catch (error) {
-        console.error('❌ Error during command deployment:', error);
+        console.error('❌ Error during command deployment! -> ', error);
     }
 }
 async function initializeCommands() {
@@ -86,7 +86,7 @@ async function initializeCommands() {
     }
 
     console.log(`Successfully loaded: ${client.commands.size}`);
-    console.log(`Failed to load: ${commandFiles.length - client.commands.size}`);
+    console.log(`Failed to load -> ${commandFiles.length - client.commands.size}`);
     console.log('\n');
 }
 
@@ -278,13 +278,13 @@ client.on('interactionCreate', async interaction => {
             }
 
         } catch (e) {
-            console.error('Error while handling command error:', e);
+            console.error('Error while handling command error! -> ', e);
         }
     }
 });
 
 client.on('error', error => {
-    console.error('Discord client error:', error);
+    console.error('Discord client error! -> ', error);
 });
 
 
