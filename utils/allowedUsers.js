@@ -1,1 +1,1 @@
-allowedUserIds = ["706057421189152839"]
+allowedUserIds = []
